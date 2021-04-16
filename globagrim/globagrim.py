@@ -12,6 +12,7 @@ def globagrim():
     #
     print("Number of longitudes: ", global_const.NJ)
     print("Number of latitudes: ", global_const.NK)
+    print("Number of model time steps: ", init.nt)
     #
     #     init model grid
     #
