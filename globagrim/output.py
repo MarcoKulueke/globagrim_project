@@ -2,7 +2,7 @@ import numpy as np
 from netCDF4 import Dataset
 import os
 
-from variables import global_const, global_int, global_array
+from .variables import global_const, global_int, global_array
 
 
 # Later move to variables
