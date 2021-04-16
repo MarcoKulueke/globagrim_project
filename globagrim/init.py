@@ -1,10 +1,11 @@
 import numpy as np
 from .variables import global_array, global_const
 
-nt = int(global_const.TF * 3600 / global_const.DT + 0.5)  # number of time steps
-print("Number of model time steps: ", nt)
-dtout = global_const.DT * global_const.NOUT / 60  # output interval in min
-ntout = nt / global_const.NOUT + 1  # output time steps
+def init_time():
+   nt = int(global_const.TF * 3600 / global_const.DT + 0.5)  # number of time steps
+   print("Number of model time steps: ", nt)
+   dtout = global_const.DT * global_const.NOUT / 60  # output interval in min
+   ntout = nt / global_const.NOUT + 1  # output time steps
 
 #
 # define cases (currently only one)
@@ -44,4 +45,5 @@ if __name__ == "__main__":
     import grid
 
     grid.grid()
+    init_time()
     init_case()
