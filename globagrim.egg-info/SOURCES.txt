@@ -1,0 +1,15 @@
+README.md
+setup.py
+globagrim/__init__.py
+globagrim/boundary_conditions.py
+globagrim/globagrim.py
+globagrim/grid.py
+globagrim/init.py
+globagrim/output.py
+globagrim/trend.py
+globagrim/variables.py
+globagrim.egg-info/PKG-INFO
+globagrim.egg-info/SOURCES.txt
+globagrim.egg-info/dependency_links.txt
+globagrim.egg-info/requires.txt
+globagrim.egg-info/top_level.txt
