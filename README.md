@@ -1,6 +1,10 @@
 # Installation
-```pip install git+git://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim```
+```
+pip install git+git://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim
+```
 
 # Usage
-```from globagrim import globagrim
-globagrim.globagrim()```
+```
+from globagrim import globagrim
+globagrim.globagrim()
+```
