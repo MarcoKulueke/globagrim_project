@@ -7,7 +7,7 @@ setup(
     license='MIT',
     description='Global Atmospheric Grid Point Model',
     long_description=open('README.md').read(),
-    install_requires=['numpy', 'xarray'],
+    install_requires=['numpy', 'xarray', 'netcdf4'],
     url='???',
     author='Marco Kulüke',
     author_email='marco.kulueke@gmail.com'
