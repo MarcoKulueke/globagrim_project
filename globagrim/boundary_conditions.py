@@ -1,4 +1,4 @@
-from variables import global_const, global_array
+from .variables import global_const, global_array
 
 
 def boundary_conditions():

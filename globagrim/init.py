@@ -1,5 +1,5 @@
 import numpy as np
-from variables import global_array, global_const
+from .variables import global_array, global_const
 
 nt = int(global_const.TF * 3600 / global_const.DT + 0.5)  # number of time steps
 print("Number of model time steps: ", nt)

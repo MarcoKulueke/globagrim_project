@@ -1,4 +1,4 @@
-from variables import global_array, global_const, global_int
+from .variables import global_array, global_const, global_int
 import numpy as np
 
 
