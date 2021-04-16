@@ -1,3 +1,3 @@
-from .. import trend
+from ..globagrim import trend
 
 globagrim()

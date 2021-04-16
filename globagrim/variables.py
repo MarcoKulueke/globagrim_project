@@ -92,7 +92,7 @@ class global_array:
     )  # absolute surface pressure
     phis = np.zeros(
         [global_const.NJ + 2, global_const.NK + 2]
-    )  # geopotential at surface
+    )  # geopotential at surface (orography)
     #
     # 3d arrays with boundary conditions
     #

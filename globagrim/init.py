@@ -23,7 +23,6 @@ def low_pressure_system():
                 )
                 / 0.05
             )
-    global_array.phis = -global_array.ps / global_const.RHOS
 
 
 #
