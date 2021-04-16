@@ -1,9 +1,9 @@
 from .variables import global_const, global_int, global_array
-import grid
-import init
-import boundary_conditions
-import trend
-import output
+import .grid
+import .init
+import .boundary_conditions
+import .trend
+import .output
 
 
 def globagrim():
