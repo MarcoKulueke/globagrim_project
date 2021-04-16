@@ -121,8 +121,8 @@ def globagrim():
             " minutes",
         )
 
-        if n % global_const.NOUT == 0:
-            #        if 0 == 0:  # output every model time step
+#        if n % global_const.NOUT == 0:
+        if 0 == 0:  # output every model time step
             global_int.nmin = global_int.nmin + int(init.dtout + 0.5)
             global_int.ntout += 1
             output.fill_output()
