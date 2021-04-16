@@ -6,6 +6,8 @@ Home-page: ???
 Author: Marco Kulüke
 Author-email: marco.kulueke@gmail.com
 License: MIT
-Description: # To Be Done
+Description: # Installation
+        
+        ```pip install git+git://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim```
         
 Platform: UNKNOWN
