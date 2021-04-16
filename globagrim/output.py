@@ -9,8 +9,8 @@ from .variables import global_const, global_int, global_array
 def init_output():
     global out, PSG, PHIS, T, U, V
 
-    print("Init: ", os.path.join("/Users", "marco", "Desktop", "output.nc"))
-    out = Dataset(os.path.join("/Users", "marco", "Desktop", "output.nc"), "w")
+    print("Init: ", os.path.join(os.getcwd(), "output.nc"))
+    out = Dataset("output.nc", "w")
 
     level = out.createDimension("level", global_const.NL)
     time = out.createDimension("time", None)  # unlimited
