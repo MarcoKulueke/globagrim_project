@@ -1,13 +1,14 @@
 import numpy as np
 from netCDF4 import Dataset
+from datetime import datetime
 import os
 
-from .variables import global_const, global_int, global_array
+from .variables import global_const, global_str, global_int, global_array
 
 
 # Later move to variables
 def init_output():
-    global out, PSG, PHIS, T, U, V
+    global out, PSG, PHIS, T, U, V, time
 
     print("Init: ", os.path.join(os.getcwd(), "output.nc"))
     out = Dataset("output.nc", "w")
@@ -20,6 +21,7 @@ def init_output():
     # create variables
     longitudes = out.createVariable("lon", np.float, "lon", fill_value=np.nan)
     latitudes = out.createVariable("lat", np.float, "lat", fill_value=np.nan)
+    time = out.createVariable("time", np.float, "time", fill_value=np.nan)
 
     PSG = out.createVariable(
         "PSG", np.float, ("time", "lat", "lon"), fill_value=np.nan
@@ -30,28 +32,29 @@ def init_output():
     )
 
     T = out.createVariable(
-        "T", np.float, ("level", "time", "lat", "lon"), fill_value=np.nan
+        "T", np.float, ("time", "level", "lat", "lon"), fill_value=np.nan
     )
 
     U = out.createVariable(
-        "U", np.float, ("level", "time", "lat", "lon"), fill_value=np.nan
+        "U", np.float, ("time", "level", "lat", "lon"), fill_value=np.nan
     )
 
     V = out.createVariable(
-        "V", np.float, ("level", "time", "lat", "lon"), fill_value=np.nan
+        "V", np.float, ("time", "level", "lat", "lon"), fill_value=np.nan
     )
 
     #    W = out.createVariable(
-    #        "W", np.float, ("level", "time", "lat", "lon"), fill_value=np.nan
+    #        "W", np.float, ("time", "level", "lat", "lon"), fill_value=np.nan
     #    )
 
     #    GP = out.createVariable(
-    #        "GP", np.float, ("level", "time", "lat", "lon"), fill_value=np.nan
+    #        "GP", np.float, ("time", "level", "lat", "lon"), fill_value=np.nan
     #    )
 
     # assign units
     longitudes.units = "degrees_east"
     latitudes.units = "degrees_north"
+    time.units = "seconds since 1992-10-8 15:15:42.5" # Coordinated Universal Time
 
     PSG.units = "hPa"
     PHIS.units = "J/kg"
@@ -73,7 +76,9 @@ def init_output():
     # fill lon/lat
     longitudes[:] = global_array.flam_deg[1 : global_const.NJ + 1]
     latitudes[:] = global_array.phi_deg[1 : global_const.NK + 1]
-
+    
+    time[0] = (datetime.strptime(global_str.start_time, '%d.%m.%Y %H:%M:%S') -datetime.strptime('08.10.1992 15:15:42.5', '%d.%m.%Y %H:%M:%S.%f')).total_seconds()
+    #time[1] = time[0] +10000
 
 def fill_output():
     global PSG, U, V
@@ -82,7 +87,9 @@ def fill_output():
         print("Write initial conditions to output.")
     else:
         print("Write to output")
-
+    
+    time[global_int.ntout] = global_int.ntout*global_const.DT +time[0]
+    
     PSG[global_int.ntout, :, :] = (
         np.swapaxes(
             global_array.psg[1 : global_const.NJ + 1, 1 : global_const.NK + 1], 0, 1
@@ -94,7 +101,7 @@ def fill_output():
         global_array.phis[1 : global_const.NJ + 1, 1 : global_const.NK + 1], 0, 1
     )  # NetCDF has (level, time, lat, lon) as standard
 
-    T[:, global_int.ntout, :, :] = (
+    T[global_int.ntout, :, :, :] = (
         np.moveaxis(
             global_array.tw[1 : global_const.NJ + 1, 1 : global_const.NK + 1, :],
             [0, 1, 2],
@@ -103,25 +110,25 @@ def fill_output():
         + global_const.T0
     )  # NetCDF has (level, time, lat, lon) as standard
 
-    U[:, global_int.ntout, :, :] = np.moveaxis(
+    U[global_int.ntout, :, :, :] = np.moveaxis(
         global_array.uw[1 : global_const.NJ + 1, 1 : global_const.NK + 1, :],
         [0, 1, 2],
         [2, 1, 0],
     )  # NetCDF has (level, time, lat, lon) as standard
 
-    V[:, global_int.ntout, :, :] = np.moveaxis(
+    V[global_int.ntout, :, :, :] = np.moveaxis(
         global_array.vw[1 : global_const.NJ + 1, 1 : global_const.NK + 1, :],
         [0, 1, 2],
         [2, 1, 0],
     )  # NetCDF has (level, time, lat, lon) as standard
 
-    # W[:, global_int.ntout, :, :] = np.moveaxis(
+    # W[global_int.ntout, :, :, :] = np.moveaxis(
     #     global_array.??[1 : global_const.NJ + 1, 1 : global_const.NK + 1, :],
     #     [0, 1, 2],
     #     [2, 1, 0],
     # )  # NetCDF has (level, time, lat, lon) as standard
 
-    # GP[:, global_int.ntout, :, :] = np.moveaxis(
+    # GP[global_int.ntout, :, :, :] = np.moveaxis(
     #     global_array.??[1 : global_const.NJ + 1, 1 : global_const.NK + 1, :],
     #     [0, 1, 2],
     #     [2, 1, 0],

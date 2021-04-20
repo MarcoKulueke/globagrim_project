@@ -10,7 +10,7 @@ class global_const:
     NL = 20  # number of SIGMA-surfaces
     DT = 15.0  # time step in SECONDS
     #    TF = 240.0  # total integration time in HOURS
-    TF = 0.25  # total integration time in HOURS
+    TF = 0.2  # total integration time in HOURS
     NOUT = 60  # output every NOUT time steps
     PS0 = 100000.0  # reference pressure experiment 1
     RE = 6.371e6  # earth radius
@@ -32,11 +32,12 @@ class global_const:
 #
 # string variables
 #
-class global_char:
-    cmon = "dec"  # month
-    cday = "30"  # day
-    chour = "00"  # hour
-    cmin = "00"  # minute
+class global_str:
+    start_time = '18.09.2010 01:55:19'
+    # cmon = "dec"  # month
+    # cday = "30"  # day
+    # chour = "00"  # hour
+    # cmin = "00"  # minute
 
 
 #
