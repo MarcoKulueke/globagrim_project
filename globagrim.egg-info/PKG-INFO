@@ -17,8 +17,8 @@ Description: # Global Atmospheric Grid Point Model (GLOBAGRIM)
         
         ## Usage
         ```
-        from globagrim import globagrim
-        globagrim.globagrim()
+        from globagrim import run
+        run.run(NJ=20, NK=10, TF=1) # 20 grid points in W-E, 10 in N-S, 1 h integration time
         ```
         
 Platform: UNKNOWN

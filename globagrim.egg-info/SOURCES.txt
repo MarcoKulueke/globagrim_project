@@ -2,10 +2,12 @@ README.md
 setup.py
 globagrim/__init__.py
 globagrim/boundary_conditions.py
+globagrim/constants.py
 globagrim/globagrim.py
 globagrim/grid.py
 globagrim/init.py
 globagrim/output.py
+globagrim/run.py
 globagrim/trend.py
 globagrim/variables.py
 globagrim.egg-info/PKG-INFO

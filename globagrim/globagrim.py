@@ -1,18 +1,13 @@
-from .variables import global_const, global_int, global_array
-from . import grid
-from . import init
-from . import boundary_conditions
-from . import trend
-from . import output
 
 
-def globagrim(**kwargs):
-    global_const.NJ = kwargs.get('NJ', global_const.NJ)
-    global_const.NK = kwargs.get('NK', global_const.NK)
-    global_const.NL= kwargs.get('NL', global_const.NL)
-    
-    global_const.DT = kwargs.get('DT', global_const.DT)
-    global_const.TF = kwargs.get('TF', global_const.TF)
+
+def globagrim():
+    from .variables import global_const, global_int, global_array
+    from . import grid
+    from . import init
+    from . import boundary_conditions
+    from . import trend
+    from . import output
     #
     #     global atmospheric grid point model [GlobAGiM]
     #
