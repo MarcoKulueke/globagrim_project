@@ -6,13 +6,20 @@ from . import trend
 from . import output
 
 
-def globagrim():
+def globagrim(**kwargs):
+    global_const.NJ = kwargs.get('NJ', global_const.NJ)
+    global_const.NK = kwargs.get('NK', global_const.NK)
+    global_const.NL= kwargs.get('NL', global_const.NL)
+    
+    global_const.DT = kwargs.get('DT', global_const.DT)
+    global_const.TF = kwargs.get('TF', global_const.TF)
     #
     #     global atmospheric grid point model [GlobAGiM]
     #
     print("Number of longitudes: ", global_const.NJ)
     print("Number of latitudes: ", global_const.NK)
     print("Number of model time steps: ", init.nt)
+    
     #
     #     init model grid
     #
