@@ -29,6 +29,7 @@ Description: # Global Atmospheric Grid Point Model (GLOBAGRIM)
         - `NL` Number of vertical levels 
         - `TF` Total integration time in hours
         - `DT` Integration time step in seconds
+        - `IEXP` Experiment Number
         
         All parameters are optional. If you do not pass any parameters the default parameters will be used.
         
@@ -41,4 +42,5 @@ Description: # Global Atmospheric Grid Point Model (GLOBAGRIM)
         ```
         model.plot('PSG', 40)
         ```
+        
 Platform: UNKNOWN
