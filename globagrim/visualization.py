@@ -5,6 +5,7 @@ import xarray as xr
 
 def plot(var_name, time_step):
     
+    colormap = {'PSG':'jet', 'PHIS':'terrein', 'T':'cool', 'U':'PiYG', 'V':'PiYG'}
     # open data set
     ds = xr.open_dataset('output.nc')
     
@@ -21,7 +22,7 @@ def plot(var_name, time_step):
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1, projection=ccrs.Orthographic(central_longitude=180.0, central_latitude=00.0,))
     
-    plt.contourf(lon, ds.lat, plot_var, transform=ccrs.PlateCarree())
+    plt.contourf(lon, ds.lat, plot_var, transform=ccrs.PlateCarree(), cmap=colormap[var_name])
     ax.coastlines()
     ax.set_global()
     

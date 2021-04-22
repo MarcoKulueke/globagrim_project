@@ -15,10 +15,30 @@ Description: # Global Atmospheric Grid Point Model (GLOBAGRIM)
         pip install git+git://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim
         ```
         
-        ## Usage
+        ## Example Usage
+        
+        Import the model from globagrim:
+        
         ```
-        from globagrim import run
-        run.run(NJ=20, NK=10, TF=1) # 20 grid points in W-E, 10 in N-S, 1 h integration time
+        from globagrim import model
         ```
         
+        You can run the model with the following parameters:
+        - `NJ` Number of west-east circles of longitude
+        - `NK` Number of north-south circles of latitude
+        - `NL` Number of vertical levels 
+        - `TF` Total integration time in hours
+        - `DT` Integration time step in seconds
+        
+        All parameters are optional. If you do not pass any parameters the default parameters will be used.
+        
+        Below you can see an example call:
+        ```
+        model.run(NJ=40, NK=80, TF=1)
+        ```
+        
+        You can visualize the results with `model.plot(<variable name>, <model time step>)`
+        ```
+        model.plot('PSG', 40)
+        ```
 Platform: UNKNOWN
