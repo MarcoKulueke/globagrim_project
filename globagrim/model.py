@@ -4,6 +4,8 @@ from . import visualization
 
 def run(**kwargs):
     
+    global_const.IEXP = kwargs.get('IEXP', global_const.IEXP)
+    
     global_const.NJ = kwargs.get('NJ', global_const.NJ)
     global_const.NK = kwargs.get('NK', global_const.NK)
     global_const.NL= kwargs.get('NL', global_const.NL)

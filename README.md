@@ -21,6 +21,7 @@ You can run the model with the following parameters:
 - `NL` Number of vertical levels 
 - `TF` Total integration time in hours
 - `DT` Integration time step in seconds
+- `IEXP` Experiment Number
 
 All parameters are optional. If you do not pass any parameters the default parameters will be used.
 
