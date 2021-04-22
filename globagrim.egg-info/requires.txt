@@ -1,3 +1,5 @@
 numpy
 xarray
 netcdf4
+cartopy
+matplotlib

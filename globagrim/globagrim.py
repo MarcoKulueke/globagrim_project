@@ -1,6 +1,3 @@
-
-
-
 def globagrim():
     from .variables import global_const, global_int, global_array
     from . import grid

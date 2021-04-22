@@ -6,10 +6,11 @@ globagrim/constants.py
 globagrim/globagrim.py
 globagrim/grid.py
 globagrim/init.py
+globagrim/model.py
 globagrim/output.py
-globagrim/run.py
 globagrim/trend.py
 globagrim/variables.py
+globagrim/visualization.py
 globagrim.egg-info/PKG-INFO
 globagrim.egg-info/SOURCES.txt
 globagrim.egg-info/dependency_links.txt
