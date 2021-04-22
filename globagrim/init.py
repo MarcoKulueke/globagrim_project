@@ -13,8 +13,8 @@ ntout = nt / global_const.NOUT + 1  # output time steps
 def low_pressure_system():
     delp = 1000
     phic = global_const.pi / 4
-    for k in range(0, global_const.NK):
-        for j in range(0, global_const.NJ):
+    for k in range(1, global_const.NK +1):
+        for j in range(1, global_const.NJ +1):
             global_array.ps[j, k] = -delp * np.exp(
                 -(
                     (global_array.flam[j] - global_const.pi) ** 2
@@ -31,8 +31,8 @@ def montain_flow():
     flamc=3.*global_const.pi/2.
     phic=global_const.pi/6.
     distm=global_const.pi/9.
-    for k in range (0,global_const.NK):
-        for j in range (0,global_const.NJ):
+    for k in range (1,global_const.NK +1):
+        for j in range (1,global_const.NJ +1):
             dist=np.sqrt((global_array.flam[j]-flamc)**2+(global_array.phi[k]-phic)**2)
             if(dist < distm):
                 global_array.phis[j,k]=phis0*(1.-dist/distm)
@@ -43,8 +43,8 @@ def montain_flow():
     #
     #     Vorgabe einer Temperaturanomalie
     #
-    for k in range(0,global_const.NK):
-        for j in range(0,global_const.NJ):
+    for k in range(1,global_const.NK +1):
+        for j in range(1,global_const.NJ +1):
             dist=np.sqrt((global_array.flam[j]-flamc)**2+(global_array.phi[k]-1.*phic)**2)
             if(dist < distm):
                 global_array.t[j,k,:]=(1.-dist/distm)

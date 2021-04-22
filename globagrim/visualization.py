@@ -17,10 +17,12 @@ def plot(var_name, time_step):
     
     # add cyclic point
     plot_var, lon = add_cyclic_point(plot_var, ds.lon)
+    # plot_u, dummy = add_cyclic_point(ds.U[time_step,0,::4,::4], ds.lon[::4])
+    # plot_v, dummy = add_cyclic_point(ds.V[time_step,0,::4,::4], ds.lon[::4])
     
     # plot var
     fig = plt.figure()
-    ax = fig.add_subplot(1, 1, 1, projection=ccrs.Orthographic(central_longitude=-90.0, central_latitude=00.0,))
+    ax = fig.add_subplot(1, 1, 1, projection=ccrs.Orthographic(central_longitude=-90.0, central_latitude=0.0,))
     
     plt.contourf(lon, ds.lat, plot_var, transform=ccrs.PlateCarree(), cmap=colormap[var_name])
     ax.coastlines()
@@ -32,5 +34,7 @@ def plot(var_name, time_step):
     # Add a title
     plt.title(ds[var_name].long_name+ ' (model time step: '+ str(time_step) +')')
     
+    # ax.quiver(dummy, ds.lat[::4], plot_u, plot_v, 
+    #       transform=ccrs.PlateCarree(), scale=300, width=0.005)
     # Show 
     plt.show()
