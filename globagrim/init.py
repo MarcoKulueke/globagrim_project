@@ -13,8 +13,8 @@ ntout = nt / global_const.NOUT + 1  # output time steps
 def low_pressure_system():
     delp = 1000
     phic = global_const.pi / 4
-    for k in range(1, global_const.NK +1):
-        for j in range(1, global_const.NJ +1):
+    for k in range(1, global_const.NK + 1):
+        for j in range(1, global_const.NJ + 1):
             global_array.ps[j, k] = -delp * np.exp(
                 -(
                     (global_array.flam[j] - global_const.pi) ** 2
@@ -24,33 +24,52 @@ def low_pressure_system():
                 / 0.05
             )
 
+
 # Case 2: Stglobal_const.REam over an isolated montain (Williamson test similation)
 def montain_flow():
-    u0=20.
-    phis0=9.81*2000.0
-    flamc=3.*global_const.pi/2.
-    phic=global_const.pi/6.
-    distm=global_const.pi/9.
-    for k in range (1,global_const.NK +1):
-        for j in range (1,global_const.NJ +1):
-            dist=np.sqrt((global_array.flam[j]-flamc)**2+(global_array.phi[k]-phic)**2)
-            if(dist < distm):
-                global_array.phis[j,k]=phis0*(1.-dist/distm)
+    u0 = 20.0
+    phis0 = 9.81 * 2000.0
+    flamc = 3.0 * global_const.pi / 2.0
+    phic = global_const.pi / 6.0
+    distm = global_const.pi / 9.0
+    for k in range(1, global_const.NK + 1):
+        for j in range(1, global_const.NJ + 1):
+            dist = np.sqrt(
+                (global_array.flam[j] - flamc) ** 2 + (global_array.phi[k] - phic) ** 2
+            )
+            if dist < distm:
+                global_array.phis[j, k] = phis0 * (1.0 - dist / distm)
             else:
-                global_array.phis[j,k]=0.
-            global_array.ps[j,k]=-global_const.RHOS*global_array.phis[j,k]-global_const.RHOS*u0*global_const.RE/2.*(2.*global_const.OM+u0/global_const.RE)*global_array.sn[k]**2
-            global_array.u[j,k,:]=(global_array.ps[j,k]+global_const.PS0)*u0*global_array.cs[k]
+                global_array.phis[j, k] = 0.0
+            global_array.ps[j, k] = (
+                -global_const.RHOS * global_array.phis[j, k]
+                - global_const.RHOS
+                * u0
+                * global_const.RE
+                / 2.0
+                * (2.0 * global_const.OM + u0 / global_const.RE)
+                * global_array.sn[k] ** 2
+            )
+            global_array.u[j, k, :] = (
+                (global_array.ps[j, k] + global_const.PS0) * u0 * global_array.cs[k]
+            )
     #
     #     Vorgabe einer Temperaturanomalie
     #
-    for k in range(1,global_const.NK +1):
-        for j in range(1,global_const.NJ +1):
-            dist=np.sqrt((global_array.flam[j]-flamc)**2+(global_array.phi[k]-1.*phic)**2)
-            if(dist < distm):
-                global_array.t[j,k,:]=(1.-dist/distm)
+    for k in range(1, global_const.NK + 1):
+        for j in range(1, global_const.NJ + 1):
+            dist = np.sqrt(
+                (global_array.flam[j] - flamc) ** 2
+                + (global_array.phi[k] - 1.0 * phic) ** 2
+            )
+            if dist < distm:
+                global_array.t[j, k, :] = 1.0 - dist / distm
             else:
-                global_array.t[j,k,:]=0.
-            global_array.t[j,k,:]=(global_array.ps[j,k]+global_const.PS0)*global_array.t[j,k,:]
+                global_array.t[j, k, :] = 0.0
+            global_array.t[j, k, :] = (
+                global_array.ps[j, k] + global_const.PS0
+            ) * global_array.t[j, k, :]
+
 
 #
 # initialize case according to selection

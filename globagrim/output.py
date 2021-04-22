@@ -23,9 +23,7 @@ def init_output():
     latitudes = out.createVariable("lat", np.float, "lat", fill_value=np.nan)
     time = out.createVariable("time", np.float, "time", fill_value=np.nan)
 
-    PHIS = out.createVariable(
-        "PHIS", np.float, ("lat", "lon"), fill_value=np.nan
-    )
+    PHIS = out.createVariable("PHIS", np.float, ("lat", "lon"), fill_value=np.nan)
 
     PSG = out.createVariable(
         "PSG", np.float, ("time", "lat", "lon"), fill_value=np.nan
@@ -54,7 +52,7 @@ def init_output():
     # assign units
     longitudes.units = "degrees_east"
     latitudes.units = "degrees_north"
-    time.units = "seconds since 1992-10-8 15:15:42.5" # Coordinated Universal Time
+    time.units = "seconds since 1992-10-8 15:15:42.5"  # Coordinated Universal Time
 
     PHIS.units = "J/kg"
     PSG.units = "hPa"
@@ -76,20 +74,26 @@ def init_output():
     # fill lon/lat
     longitudes[:] = global_array.flam_deg[1 : global_const.NJ + 1]
     latitudes[:] = global_array.phi_deg[1 : global_const.NK + 1]
-    
-    time[0] = (datetime.strptime(global_str.start_time, '%d.%m.%Y %H:%M:%S') -datetime.strptime('08.10.1992 15:15:42.5', '%d.%m.%Y %H:%M:%S.%f')).total_seconds()
+
+    time[0] = (
+        datetime.strptime(global_str.start_time, "%d.%m.%Y %H:%M:%S")
+        - datetime.strptime("08.10.1992 15:15:42.5", "%d.%m.%Y %H:%M:%S.%f")
+    ).total_seconds()
+
 
 def fill_output():
     global PSG, U, V
 
     if global_int.ntout == 0:
         print("Write initial conditions to output.")
-        PHIS[:, :] = np.swapaxes(global_array.phis[1 : global_const.NJ + 1, 1 : global_const.NK + 1], 0, 1)  # NetCDF has (level, time, lat, lon) as standard
+        PHIS[:, :] = np.swapaxes(
+            global_array.phis[1 : global_const.NJ + 1, 1 : global_const.NK + 1], 0, 1
+        )  # NetCDF has (level, time, lat, lon) as standard
     else:
         print("Write to output")
-    
-    time[global_int.ntout] = global_int.ntout*global_const.DT +time[0]
-    
+
+    time[global_int.ntout] = global_int.ntout * global_const.DT + time[0]
+
     PSG[global_int.ntout, :, :] = (
         np.swapaxes(
             global_array.psg[1 : global_const.NJ + 1, 1 : global_const.NK + 1], 0, 1

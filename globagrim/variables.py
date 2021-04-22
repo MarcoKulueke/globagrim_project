@@ -34,7 +34,7 @@ from .constants import global_const
 # string variables
 #
 class global_str:
-    start_time = '18.09.2010 01:55:19'
+    start_time = "18.09.2010 01:55:19"
     # cmon = "dec"  # month
     # cday = "30"  # day
     # chour = "00"  # hour

@@ -5,13 +5,14 @@ def globagrim():
     from . import boundary_conditions
     from . import trend
     from . import output
+
     #
     #     global atmospheric grid point model [GlobAGiM]
     #
     print("Number of longitudes: ", global_const.NJ)
     print("Number of latitudes: ", global_const.NK)
     print("Number of model time steps: ", init.nt)
-    
+
     #
     #     init model grid
     #
@@ -120,7 +121,7 @@ def globagrim():
             " minutes",
         )
 
-#        if n % global_const.NOUT == 0:
+        #        if n % global_const.NOUT == 0:
         if 0 == 0:  # output every model time step
             global_int.nmin = global_int.nmin + int(init.dtout + 0.5)
             global_int.ntout += 1

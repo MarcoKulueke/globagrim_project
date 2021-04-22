@@ -1,4 +1,6 @@
 import numpy as np
+
+
 class global_const:
     pi = np.arctan(1.0) * 4.0
     NJ = 144  # west-east / number of circles of longitude

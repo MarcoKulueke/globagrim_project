@@ -8,7 +8,6 @@ globagrim/grid.py
 globagrim/init.py
 globagrim/model.py
 globagrim/output.py
-globagrim/tmp.py
 globagrim/trend.py
 globagrim/variables.py
 globagrim/visualization.py
