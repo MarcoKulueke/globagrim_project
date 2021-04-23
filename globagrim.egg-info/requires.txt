@@ -1,11 +1,10 @@
-numpy
+numpy==1.10
 xarray
 netcdf4
 matplotlib
 cython
 geos
 pyshp
-pyproj
+pyproj==4.9
 six
 cartopy
-matplotlib
