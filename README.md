@@ -6,7 +6,7 @@ This model is based on the GLOBAGIM of the CLISAP (more information can be found
 Create a conda environment with
 ```
 
-conda env create -f Documents/globagrim_project/environment.yml
+conda env create -f environment.yml
 ```
 This installs GLOBAGRIM and all dependencies.
 Then, activate the environment with:
