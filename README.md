@@ -43,7 +43,7 @@ Below you can see an example call:
 model.run(NJ=40, NK=80, TF=1)
 ```
 
-You can visualize the results with: `model.plot(<variable name>, <model time step>)`
+You can visualize the results with:
 ```
 model.plot('PSG', 40)
 ```
