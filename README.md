@@ -1,4 +1,6 @@
-# GLOBAGRIM (### Global Atmospheric Grid Point Model)
+# GLOBAGRIM 
+### Global Atmospheric Grid Point Model
+___
 
 This model is based on the GLOBAGIM of the CLISAP (more information can be found via: https://www.clisap.de/research/b:-climate-manifestations-and-impacts/crg-dynamical-systems/models/globagim/)
 
