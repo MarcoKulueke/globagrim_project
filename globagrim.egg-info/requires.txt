@@ -1,5 +1,11 @@
 numpy
 xarray
 netcdf4
+matplotlib
+cython
+geos
+pyshp
+pyproj
+six
 cartopy
 matplotlib
