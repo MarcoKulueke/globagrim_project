@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import xarray as xr
 
 
-def plot(var_name, time_step):
+def plot(var_name, time_step, center):
     
     colormap = {"PSG": "jet", "SE": "terrain", "T": "cool", "U": "PiYG", "V": "PiYG"}
     # open data set
@@ -12,7 +12,6 @@ def plot(var_name, time_step):
 
     # open var
     if len(ds[var_name].dims) == 2:
-        print("SE")
         plot_var = ds[var_name][:, :]
     elif len(ds[var_name].dims) == 3:
         plot_var = ds[var_name][time_step, :, :]
@@ -30,7 +29,7 @@ def plot(var_name, time_step):
         1,
         1,
         1,
-        projection=ccrs.Orthographic(central_longitude=-90.0, central_latitude=0.0),
+        projection=ccrs.Orthographic(central_longitude=center[0], central_latitude=center[1]),
     )
 
     plt.contourf(
