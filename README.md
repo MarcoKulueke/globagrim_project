@@ -3,9 +3,22 @@
 This model is based on the GLOBAGIM of the CLISAP (more information can be found via: https://www.clisap.de/research/b:-climate-manifestations-and-impacts/crg-dynamical-systems/models/globagim/)
 
 ## Installation
+Create a conda environment with
+```
+
+conda env create -f Documents/globagrim_project/environment.yml
+```
+This installs GLOBAGRIM and all dependencies.
+Then, activate the environment with:
+```
+conda activate globagrim_env
+```
+---
+If you already have ` numpy, xarray, netcdf4, matplotlib, cartopy, jupyter` installed, you can also add the GLOBAGRIM package to your current environment by executing:
 ```
 pip install git+git://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim
 ```
+---
 
 ## Example Usage
 
@@ -21,7 +34,7 @@ You can run the model with the following parameters:
 - `NL` Number of vertical levels 
 - `TF` Total integration time in hours
 - `DT` Integration time step in seconds
-- `IEXP` Experiment Number
+- `IEXP` Experiment Number ('1' low pressure system over the pacific, `2`stream over montain in North America)
 
 All parameters are optional. If you do not pass any parameters the default parameters will be used.
 

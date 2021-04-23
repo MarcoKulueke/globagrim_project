@@ -1,0 +1,16 @@
+name: globagrim_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - numpy
+  - xarray
+  - netcdf4
+  - matplotlib
+  - shapely
+  - cartopy
+  - jupyter
+  - pip
+  - pip:
+    - "--editable=git+https://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim"
