@@ -17,6 +17,9 @@ def run(**kwargs):
     globagrim.globagrim()
 
 
-def plot(var_name, time_step):
-
+def plot(**kwargs):
+    
+    var_name = kwargs.get("var_name", 'PSG')
+    time_step = kwargs.get('time_step', 0)
+    
     visualization.plot(var_name, time_step)

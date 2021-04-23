@@ -28,7 +28,7 @@ def low_pressure_system():
 # Case 2: Stglobal_const.REam over an isolated montain (Williamson test similation)
 def montain_flow():
     u0 = 20.0
-    phis0 = 9.81 * 2000.0
+    phis0 = global_const.G * 2000.0
     flamc = 3.0 * global_const.pi / 2.0
     phic = global_const.pi / 6.0
     distm = global_const.pi / 9.0

@@ -14,6 +14,7 @@ class global_const:
     RE = 6.371e6  # earth radius
     RHOS = 1.3  # mean air density at surface
     OM = 7.292e-5  # angular velocity of earth
+    G = 9.81 # m/s2
     RD = 287.0  # specific gas constant
     CP = 1005.0  # specific heat capacity
     FKAP = RD / CP  # heat capacity ratio

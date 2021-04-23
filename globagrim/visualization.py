@@ -5,13 +5,16 @@ import xarray as xr
 
 
 def plot(var_name, time_step):
-
-    colormap = {"PSG": "jet", "PHIS": "terrain", "T": "cool", "U": "PiYG", "V": "PiYG"}
+    
+    colormap = {"PSG": "jet", "SE": "terrain", "T": "cool", "U": "PiYG", "V": "PiYG"}
     # open data set
     ds = xr.open_dataset("output.nc")
 
     # open var
-    if len(ds[var_name].dims) == 3:
+    if len(ds[var_name].dims) == 2:
+        print("SE")
+        plot_var = ds[var_name][:, :]
+    elif len(ds[var_name].dims) == 3:
         plot_var = ds[var_name][time_step, :, :]
     elif len(ds[var_name].dims) == 4:
         plot_var = ds[var_name][time_step, 0, :, :]
@@ -40,7 +43,7 @@ def plot(var_name, time_step):
     plt.colorbar(ax=ax, label=ds[var_name].units)
 
     # Add a title
-    plt.title(ds[var_name].long_name + " (model time step: " + str(time_step) + ")")
+    plt.title(ds[var_name].long_name + " (model time step " + str(time_step) + ")")
 
     # ax.quiver(dummy, ds.lat[::4], plot_u, plot_v,
     #       transform=ccrs.PlateCarree(), scale=300, width=0.005)

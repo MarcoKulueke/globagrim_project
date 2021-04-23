@@ -14,7 +14,7 @@ Description: # Global Atmospheric Grid Point Model (GLOBAGRIM)
         Create a conda environment with
         ```
         
-        conda env create -f Documents/globagrim_project/environment.yml
+        conda env create -f environment.yml
         ```
         This installs GLOBAGRIM and all dependencies.
         Then, activate the environment with:

@@ -8,7 +8,7 @@ from .variables import global_const, global_str, global_int, global_array
 
 # Later move to variables
 def init_output():
-    global out, PSG, PHIS, T, U, V, time
+    global out, PSG, SE, T, U, V, time
 
     print("Init: ", os.path.join(os.getcwd(), "output.nc"))
     out = Dataset("output.nc", "w")
@@ -23,7 +23,7 @@ def init_output():
     latitudes = out.createVariable("lat", np.float, "lat", fill_value=np.nan)
     time = out.createVariable("time", np.float, "time", fill_value=np.nan)
 
-    PHIS = out.createVariable("PHIS", np.float, ("lat", "lon"), fill_value=np.nan)
+    SE = out.createVariable("SE", np.float, ("lat", "lon"), fill_value=np.nan)
 
     PSG = out.createVariable(
         "PSG", np.float, ("time", "lat", "lon"), fill_value=np.nan
@@ -54,7 +54,7 @@ def init_output():
     latitudes.units = "degrees_north"
     time.units = "seconds since 1992-10-8 15:15:42.5"  # Coordinated Universal Time
 
-    PHIS.units = "J/kg"
+    SE.units = "m"
     PSG.units = "hPa"
     T.units = "K"
     U.units = "m/s"
@@ -63,7 +63,7 @@ def init_output():
     #    GP.units = "J/kg"
 
     # assign names
-    PHIS.long_name = "Sea Level Geopotential"
+    SE.long_name = "Surface Elevation"
     PSG.long_name = "Sea Level Pressure"
     T.long_name = "Temperature"
     U.long_name = "Zonal Wind"
@@ -82,13 +82,13 @@ def init_output():
 
 
 def fill_output():
-    global PSG, U, V
+#    global PSG, U, V
 
     if global_int.ntout == 0:
         print("Write initial conditions to output.")
-        PHIS[:, :] = np.swapaxes(
+        SE[:, :] = np.swapaxes(
             global_array.phis[1 : global_const.NJ + 1, 1 : global_const.NK + 1], 0, 1
-        )  # NetCDF has (level, time, lat, lon) as standard
+        )/global_const.G  # NetCDF has (level, time, lat, lon) as standard
     else:
         print("Write to output")
 
