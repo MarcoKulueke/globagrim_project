@@ -43,7 +43,11 @@ Below you can see an example call:
 model.run(NJ=40, NK=80, TF=1)
 ```
 
-You can visualize the results with `model.plot(<variable name>, <model time step>)`
+You can visualize the results with: `model.plot(<variable name>, <model time step>)`
 ```
 model.plot('PSG', 40)
 ```
+Again, all parameters are optional. You can specify the visualization with the following parameters:
+- `var_name` String variable name
+- `time_step` Integer model time step
+- `center` Touple `(<lon>,<lat>)` for center of visualization
