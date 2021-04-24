@@ -71,6 +71,11 @@ def montain_flow():
             ) * global_array.t[j, k, :]
 
 
+# Case 3: Random wind field
+def random():
+	global_array.u[:] = np.random.rand(global_const.NJ +2, global_const.NK +2, global_const.NL)*30*global_const.PS0
+	global_array.v[:] = np.random.rand(global_const.NJ +2, global_const.NK +2, global_const.NL)*30*global_const.PS0
+
 #
 # initialize case according to selection
 #
@@ -79,6 +84,8 @@ def init_case():
         low_pressure_system()
     elif global_const.IEXP == 2:
         montain_flow()
+    elif global_const.IEXP == 3:
+        random()
     else:
         print("Experiment number not defined.")
 
