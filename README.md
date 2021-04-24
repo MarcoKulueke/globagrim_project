@@ -36,7 +36,9 @@ You can run the model with the following parameters:
 - `NL` Number of vertical levels 
 - `TF` Total integration time in hours
 - `DT` Integration time step in seconds
-- `IEXP` Experiment Number (`1` low pressure system over the pacific, `2`stream over montain in North America)
+- `IEXP` Experiment number (`1` low pressure system over the pacific, `2`stream over montain in North America, `3`Random wind field)
+- `INT` Output intervall in hours
+- `OUT` Output path and file name
 
 All parameters are optional. If you do not pass any parameters the default parameters will be used.
 
@@ -51,5 +53,5 @@ model.plot('PSG', 40)
 ```
 Again, all parameters are optional. You can specify the visualization with the following parameters:
 - `var_name` String variable name
-- `time_step` Integer model time step
+- `out_step` Integer output time step
 - `center` Touple `(<lon>,<lat>)` for center of visualization
