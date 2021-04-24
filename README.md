@@ -1,6 +1,6 @@
-![logo](https://github.com/MarcoKulueke/globagrim_project/blob/main/png/logo.png?raw=true)
-
 # Global Atmospheric Grid Point Model
+
+![logo](https://github.com/MarcoKulueke/globagrim_project/blob/main/png/logo.png?raw=true)
 
 This model is based on the GLOBAGIM of the CLISAP (more information can be found via: https://www.clisap.de/research/b:-climate-manifestations-and-impacts/crg-dynamical-systems/models/globagim/)
 
