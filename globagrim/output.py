@@ -10,8 +10,8 @@ from .variables import global_const, global_str, global_int, global_array
 def init_output():
     global out, PSG, SE, T, U, V, time
 
-    print("Init: ", os.path.join(os.getcwd(), "output.nc"))
-    out = Dataset("output.nc", "w")
+    print("Init: ", os.path.join(os.getcwd(), global_const.output_path))
+    out = Dataset(global_const.output_path, "w")
 
     level = out.createDimension("level", global_const.NL)
     time = out.createDimension("time", None)  # unlimited
@@ -82,13 +82,18 @@ def init_output():
 
 
 def fill_output():
-#    global PSG, U, V
+    #    global PSG, U, V
 
     if global_int.ntout == 0:
         print("Write initial conditions to output.")
-        SE[:, :] = np.swapaxes(
-            global_array.phis[1 : global_const.NJ + 1, 1 : global_const.NK + 1], 0, 1
-        )/global_const.G  # NetCDF has (level, time, lat, lon) as standard
+        SE[:, :] = (
+            np.swapaxes(
+                global_array.phis[1 : global_const.NJ + 1, 1 : global_const.NK + 1],
+                0,
+                1,
+            )
+            / global_const.G
+        )  # NetCDF has (level, time, lat, lon) as standard
     else:
         print("Write to output")
 

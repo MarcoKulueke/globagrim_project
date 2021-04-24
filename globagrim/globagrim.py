@@ -69,7 +69,11 @@ def globagrim():
     global_array.t[:, :, :] = global_array.tn[:, :, :]
     #
     print(
-        "Model time step: ", n, ", Elapsed model time: ", (n + 1) * global_const.DT / 60, " minutes"
+        "Model time step: ",
+        n,
+        ", Elapsed model time: ",
+        (n + 1) * global_const.DT / 60,
+        " minutes",
     )
     output.fill_output()
     print("---")

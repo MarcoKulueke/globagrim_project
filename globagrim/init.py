@@ -73,8 +73,25 @@ def montain_flow():
 
 # Case 3: Random wind field
 def random():
-	global_array.u[:] = np.random.rand(global_const.NJ +2, global_const.NK +2, global_const.NL)*30*global_const.PS0
-	global_array.v[:] = np.random.rand(global_const.NJ +2, global_const.NK +2, global_const.NL)*30*global_const.PS0
+    global_array.u[:] = (
+        np.random.uniform(
+            low=-1.0,
+            high=1.0,
+            size=(global_const.NJ + 2, global_const.NK + 2, global_const.NL),
+        )
+        * 30
+        * global_const.PS0
+    )
+    global_array.v[:] = (
+        np.random.uniform(
+            low=-1.0,
+            high=1.0,
+            size=(global_const.NJ + 2, global_const.NK + 2, global_const.NL),
+        )
+        * 30
+        * global_const.PS0
+    )
+
 
 #
 # initialize case according to selection

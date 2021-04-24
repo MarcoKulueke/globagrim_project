@@ -14,13 +14,15 @@ def run(**kwargs):
     global_const.DT = kwargs.get("DT", global_const.DT)
     global_const.TF = kwargs.get("TF", global_const.TF)
 
+    global_const.output_path = kwargs.get("out", global_const.output_path)
+
     globagrim.globagrim()
 
 
 def plot(**kwargs):
-    
-    var_name = kwargs.get("var_name", 'PSG')
-    time_step = kwargs.get('time_step', 0)
-    center = kwargs.get('center', (-90.,0.))
-    
+
+    var_name = kwargs.get("var_name", "PSG")
+    time_step = kwargs.get("time_step", 0)
+    center = kwargs.get("center", (-90.0, 0.0))
+
     visualization.plot(var_name, time_step, center)

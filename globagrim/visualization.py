@@ -3,12 +3,14 @@ from cartopy.util import add_cyclic_point
 import matplotlib.pyplot as plt
 import xarray as xr
 
+from .variables import global_const
+
 
 def plot(var_name, time_step, center):
-    
+
     colormap = {"PSG": "jet", "SE": "terrain", "T": "cool", "U": "PiYG", "V": "PiYG"}
     # open data set
-    ds = xr.open_dataset("output.nc")
+    ds = xr.open_dataset(global_const.output_path)
 
     # open var
     if len(ds[var_name].dims) == 2:
@@ -29,7 +31,9 @@ def plot(var_name, time_step, center):
         1,
         1,
         1,
-        projection=ccrs.Orthographic(central_longitude=center[0], central_latitude=center[1]),
+        projection=ccrs.Orthographic(
+            central_longitude=center[0], central_latitude=center[1]
+        ),
     )
 
     plt.contourf(
