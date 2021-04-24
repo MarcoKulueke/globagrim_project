@@ -27,4 +27,5 @@ class global_const:
     #    lfil = False  # switch for dynamic filter
     #
     output_path = os.path.join("output.nc")
+    output_int = 0 # output intervall in hours
     ndmon = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]

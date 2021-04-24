@@ -12,6 +12,11 @@ def globagrim():
     print("Number of longitudes: ", global_const.NJ)
     print("Number of latitudes: ", global_const.NK)
     print("Number of model time steps: ", init.nt)
+    if global_const.output_int == 0:
+        nout = 1
+    else:
+        nout =   global_const.output_int*3600/global_const.DT
+    print("Output every ", nout, " model time steps")
 
     #
     #     init model grid
@@ -53,9 +58,10 @@ def globagrim():
     global_array.tn[:, :, :] = (
         global_array.t[:, :, :] + global_const.DT * global_array.tt[:, :, :]
     )
-    global_array.ti = global_int.ti + global_const.DT / 3600.0
+#    global_array.ti = global_int.ti + global_const.DT / 3600.0
     n = 0
-    global_int.ntout += 1
+    
+    global_int.ti = global_int.ti +global_const.DT
     #
     #     rewrite results
     #
@@ -75,7 +81,11 @@ def globagrim():
         (n + 1) * global_const.DT / 60,
         " minutes",
     )
-    output.fill_output()
+    
+    if nout == 1:
+        global_int.ntout += 1
+        output.fill_output()
+        
     print("---")
     #
     #     time loop
@@ -125,9 +135,10 @@ def globagrim():
             " minutes",
         )
 
-        #        if n % global_const.NOUT == 0:
-        if 0 == 0:  # output every model time step
-            global_int.nmin = global_int.nmin + int(init.dtout + 0.5)
+        global_int.ti = global_int.ti +global_const.DT
+        
+        if (n+1) % nout == 0:
+#            global_int.nmin = global_int.nmin + int(init.dtout + 0.5)
             global_int.ntout += 1
             output.fill_output()
 

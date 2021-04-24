@@ -46,7 +46,7 @@ def plot(var_name, time_step, center):
     plt.colorbar(ax=ax, label=ds[var_name].units)
 
     # Add a title
-    plt.title(ds[var_name].long_name + " (model time step " + str(time_step) + ")")
+    plt.title(ds[var_name].long_name + " (output time step " + str(time_step) + ")")
 
     # ax.quiver(dummy, ds.lat[::4], plot_u, plot_v,
     #       transform=ccrs.PlateCarree(), scale=300, width=0.005)

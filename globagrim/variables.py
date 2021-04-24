@@ -16,6 +16,7 @@ class global_str:
 # integer variables
 #
 class global_int:
+    
     nyear = 2014  # year
     nmonth = 12  # month
     nday = 30  # day
@@ -24,7 +25,7 @@ class global_int:
     #
     # float variables
     #
-    ti = 0.0  # model time in HOURS
+    ti = 0.0  # model time in seconds
     #
     # scalars
     #

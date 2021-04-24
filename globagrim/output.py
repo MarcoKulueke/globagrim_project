@@ -96,8 +96,8 @@ def fill_output():
         )  # NetCDF has (level, time, lat, lon) as standard
     else:
         print("Write to output")
-
-    time[global_int.ntout] = global_int.ntout * global_const.DT + time[0]
+    
+    time[global_int.ntout] = global_int.ti + time[0]
 
     PSG[global_int.ntout, :, :] = (
         np.swapaxes(
