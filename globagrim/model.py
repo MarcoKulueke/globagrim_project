@@ -26,5 +26,6 @@ def plot(**kwargs):
     var_name = kwargs.get("var_name", "PSG")
     time_step = kwargs.get("out_step", 0)
     center = kwargs.get("center", (-90.0, 0.0))
+    min_max = kwargs.get("min_max", None)
 
-    visualization.plot(var_name, time_step, center)
+    visualization.plot(var_name, time_step, center, min_max)

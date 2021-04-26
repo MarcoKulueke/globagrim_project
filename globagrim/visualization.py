@@ -1,14 +1,21 @@
 import cartopy.crs as ccrs
 from cartopy.util import add_cyclic_point
 import matplotlib.pyplot as plt
+import numpy as np
 import xarray as xr
 
 from .variables import global_const
 
 
-def plot(var_name, time_step, center):
+def plot(var_name, time_step, center, min_max):
 
-    colormap = {"PSG": "jet", "SE": "terrain", "T": "cool", "U": "PiYG", "V": "PiYG"}
+    var_set = {"PSG": "jet", "SE": "terrain", "T": "cool", "U": "PiYG", "V": "PiYG"}
+    
+    if min_max == None:
+        levels=10
+    else:
+        levels=np.linspace(min_max[0], min_max[1], 10)
+        
     # open data set
     ds = xr.open_dataset(global_const.output_path)
 
@@ -35,9 +42,8 @@ def plot(var_name, time_step, center):
             central_longitude=center[0], central_latitude=center[1]
         ),
     )
-
     plt.contourf(
-        lon, ds.lat, plot_var, transform=ccrs.PlateCarree(), cmap=colormap[var_name]
+        lon, ds.lat, plot_var, transform=ccrs.PlateCarree(), levels=levels, cmap=var_set[var_name], extend='both'
     )
     ax.coastlines()
     ax.set_global()

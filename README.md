@@ -55,3 +55,4 @@ Again, all parameters are optional. You can specify the visualization with the f
 - `var_name` String variable name
 - `out_step` Integer output time step
 - `center` Touple `(<lon>,<lat>)` for center of visualization
+- `min_max` Touple `(<min>,<max>)` for a fixed colorbar
