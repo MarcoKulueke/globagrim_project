@@ -7,7 +7,7 @@ import xarray as xr
 from .variables import global_const
 
 
-def plot(var_name, time_step, center, min_max):
+def plot(var_name, time_step, center, min_max, save):
 
     var_set = {"PSG": "jet", "SE": "terrain", "T": "cool", "U": "PiYG", "V": "PiYG"}
     
@@ -42,7 +42,7 @@ def plot(var_name, time_step, center, min_max):
             central_longitude=center[0], central_latitude=center[1]
         ),
     )
-    plt.contourf(
+    cnplot = plt.contourf(
         lon, ds.lat, plot_var, transform=ccrs.PlateCarree(), levels=levels, cmap=var_set[var_name], extend='both'
     )
     ax.coastlines()
@@ -57,4 +57,8 @@ def plot(var_name, time_step, center, min_max):
     # ax.quiver(dummy, ds.lat[::4], plot_u, plot_v,
     #       transform=ccrs.PlateCarree(), scale=300, width=0.005)
     # Show
-    plt.show()
+    if save == None:
+        plt.show()
+    else:
+        fig.savefig(save, bbox_inches='tight', dpi=100)
+        plt.close()
