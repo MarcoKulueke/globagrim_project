@@ -52,7 +52,7 @@ Description: # Global Atmospheric Grid Point Model
         
         Below you can see an example call:
         ```
-        model.run(NJ=40, NK=80, TF=1)
+        model.run(NJ=80, NK=40, TF=1)
         ```
         
         You can visualize the results with:

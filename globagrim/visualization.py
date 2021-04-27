@@ -4,10 +4,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import xarray as xr
 
-from .variables import global_const
-
 
 def plot(var_name, time_step, center, min_max, save):
+    from .variables import global_const
 
     var_set = {"PSG": "jet", "SE": "terrain", "T": "cool", "U": "PiYG", "V": "PiYG"}
     

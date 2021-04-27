@@ -44,7 +44,7 @@ All parameters are optional. If you do not pass any parameters the default param
 
 Below you can see an example call:
 ```
-model.run(NJ=40, NK=80, TF=1)
+model.run(NJ=80, NK=40, TF=1)
 ```
 
 You can visualize the results with:
