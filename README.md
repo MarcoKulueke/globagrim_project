@@ -17,7 +17,7 @@ conda activate globagrim_env
 ```
 ---
 ### Alternative
-If you already have `numpy, xarray, netcdf4, matplotlib, cartopy, jupyter, pip` installed, you can also add the GLOBAGRIM package to your current environment by executing:
+If you already have `numpy, xarray, netcdf4, matplotlib, cartopy, jupyter, pip` installed, you could add the GLOBAGRIM package to your current environment by executing:
 ```
 pip install git+git://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim
 ```
