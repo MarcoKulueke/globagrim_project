@@ -57,3 +57,4 @@ Again, all parameters are optional. You can specify the visualization with the f
 - `out_step` Integer output time step
 - `center` Touple `(<lon>,<lat>)` for center of visualization
 - `min_max` Touple `(<min>,<max>)` for a fixed colorbar
+- `save` String (e.g. `test.png`)
