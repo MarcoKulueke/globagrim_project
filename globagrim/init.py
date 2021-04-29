@@ -6,10 +6,10 @@ dtout = global_const.DT * global_const.NOUT / 60  # output interval in min
 ntout = nt / global_const.NOUT + 1  # output time steps
 
 #
-# define cases (curglobal_const.REntly only one)
+# define cases
 #
 
-# Case 1: Initial low pglobal_const.REssuglobal_const.RE system
+# Case 1: Initial low pressure system
 def low_pressure_system():
     delp = 1000
     phic = global_const.pi / 4
@@ -19,13 +19,13 @@ def low_pressure_system():
                 -(
                     (global_array.flam[j] - global_const.pi) ** 2
                     + (global_array.phi[k] - phic)
-                    ** 2  # indexing of flam and phic seems to be wrong
+                    ** 2
                 )
                 / 0.05
             )
 
 
-# Case 2: Stglobal_const.REam over an isolated montain (Williamson test similation)
+# Case 2: Stream over an isolated montain (Williamson test similation)
 def montain_flow():
     u0 = 20.0
     phis0 = global_const.G * 2000.0
