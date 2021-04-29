@@ -10,7 +10,7 @@ Description: # Global Atmospheric Grid Point Model
         
         ![logo](https://github.com/MarcoKulueke/globagrim_project/blob/main/png/logo.png?raw=true)
         
-        This model is based on the GLOBAGIM of the CLISAP (more information can be found via: https://www.clisap.de/research/b:-climate-manifestations-and-impacts/crg-dynamical-systems/models/globagim/)
+        This model is inspired by GLOBAGIM of CLISAP (more information can be found via: https://www.clisap.de/research/b:-climate-manifestations-and-impacts/crg-dynamical-systems/models/globagim/)
         
         ## Installation
         Create a conda environment with
@@ -24,7 +24,8 @@ Description: # Global Atmospheric Grid Point Model
         conda activate globagrim_env
         ```
         ---
-        If you already have ` numpy, xarray, netcdf4, matplotlib, cartopy, jupyter` installed, you can also add the GLOBAGRIM package to your current environment by executing:
+        ### Alternative
+        If you already have `numpy, xarray, netcdf4, matplotlib, cartopy, jupyter, pip` installed, you could add the GLOBAGRIM package to your current environment by executing:
         ```
         pip install git+git://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim
         ```

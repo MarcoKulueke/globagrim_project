@@ -9,7 +9,7 @@ class global_const:
     NL = 20  # number of SIGMA-surfaces
     DT = 15.0  # time step in SECONDS
     #    TF = 240.0  # total integration time in HOURS
-    TF = 0.2  # total integration time in HOURS
+    TF = 0.025  # total integration time in HOURS
     NOUT = 60  # output every NOUT time steps
     PS0 = 100000.0  # reference pressure experiment 1
     RE = 6.371e6  # earth radius

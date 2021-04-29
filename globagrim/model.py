@@ -25,7 +25,7 @@ def plot(**kwargs):
 
     var_name = kwargs.get("var_name", "PSG")
     time_step = kwargs.get("out_step", 0)
-    center = kwargs.get("center", (-90.0, 0.0))
+    center = kwargs.get("center", (-180.0, 0.0))
     min_max = kwargs.get("min_max", None)
     save = kwargs.get("save", None)
 
