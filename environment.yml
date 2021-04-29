@@ -13,4 +13,4 @@ dependencies:
   - jupyter
   - pip
   - pip:
-    - "--editable=git+https://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim"
+    - "git+https://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim"
