@@ -19,34 +19,34 @@ def init_output():
     lat = out.createDimension("lat", global_const.NK)
 
     # create variables
-    longitudes = out.createVariable("lon", 'd', "lon", fill_value=np.nan)
-    latitudes = out.createVariable("lat", 'd', "lat", fill_value=np.nan)
-    time = out.createVariable("time", 'd', "time", fill_value=np.nan)
+    longitudes = out.createVariable("lon", 'd', "lon")
+    latitudes = out.createVariable("lat", 'd', "lat")
+    time = out.createVariable("time", 'd', "time")
 
-    SE = out.createVariable("SE", 'f', ("lat", "lon"), fill_value=np.nan)
+    SE = out.createVariable("SE", 'f', ("lat", "lon"))
 
     PSG = out.createVariable(
-        "PSG", 'f', ("time", "lat", "lon"), fill_value=np.nan
+        "PSG", 'f', ("time", "lat", "lon")
     )  # NetCDF has (level, time, lat, lon) as standard
 
     T = out.createVariable(
-        "T", 'f', ("time", "level", "lat", "lon"), fill_value=np.nan
+        "T", 'f', ("time", "level", "lat", "lon")
     )
 
     U = out.createVariable(
-        "U", 'f', ("time", "level", "lat", "lon"), fill_value=np.nan
+        "U", 'f', ("time", "level", "lat", "lon")
     )
 
     V = out.createVariable(
-        "V", 'f', ("time", "level", "lat", "lon"), fill_value=np.nan
+        "V", 'f', ("time", "level", "lat", "lon")
     )
 
     #    W = out.createVariable(
-    #        "W", 'f', ("time", "level", "lat", "lon"), fill_value=np.nan
+    #        "W", 'f', ("time", "level", "lat", "lon")
     #    )
 
     #    GP = out.createVariable(
-    #        "GP", 'f', ("time", "level", "lat", "lon"), fill_value=np.nan
+    #        "GP", 'f', ("time", "level", "lat", "lon")
     #    )
 
     # assign units
