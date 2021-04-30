@@ -1,4 +1,5 @@
 import numpy as np
+import netCDF4
 from netCDF4 import Dataset
 from datetime import datetime
 import os
@@ -23,30 +24,30 @@ def init_output():
     latitudes = out.createVariable("lat", "d", "lat", fill_value=False)
     time = out.createVariable("time", "d", "time", fill_value=False)
 
-    SE = out.createVariable("SE", "f", ("lat", "lon"), fill_value=np.nan)
+    SE = out.createVariable("SE", "f", ("lat", "lon"), fill_value=netCDF4.default_fillvals['f4'])
 
     PSG = out.createVariable(
-        "PSG", "f", ("time", "lat", "lon"), fill_value=np.nan
+        "PSG", "f", ("time", "lat", "lon"), fill_value=netCDF4.default_fillvals['f4']
     )  # NetCDF has (level, time, lat, lon) as standard
 
     T = out.createVariable(
-        "T", "f", ("time", "level", "lat", "lon"), fill_value=np.nan
+        "T", "f", ("time", "level", "lat", "lon"), fill_value=netCDF4.default_fillvals['f4']
     )
 
     U = out.createVariable(
-        "U", "f", ("time", "level", "lat", "lon"), fill_value=np.nan
+        "U", "f", ("time", "level", "lat", "lon"), fill_value=netCDF4.default_fillvals['f4']
     )
 
     V = out.createVariable(
-        "V", "f", ("time", "level", "lat", "lon"), fill_value=np.nan
+        "V", "f", ("time", "level", "lat", "lon"), fill_value=netCDF4.default_fillvals['f4']
     )
 
     #    W = out.createVariable(
-    #        "W", "f", ("time", "level", "lat", "lon"), fill_value=np.nan
+    #        "W", "f", ("time", "level", "lat", "lon"), fill_value=netCDF4.default_fillvals['f4']
     #    )
 
     #    GP = out.createVariable(
-    #        "GP", "f", ("time", "level", "lat", "lon"), fill_value=np.nan
+    #        "GP", "f", ("time", "level", "lat", "lon"), fill_value=netCDF4.default_fillvals['f4']
     #    )
 
     # set axis attriute
