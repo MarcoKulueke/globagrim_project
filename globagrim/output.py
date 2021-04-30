@@ -19,34 +19,34 @@ def init_output():
     lat = out.createDimension("lat", global_const.NK)
 
     # create variables
-    longitudes = out.createVariable("lon", np.float, "lon", fill_value=False)
-    latitudes = out.createVariable("lat", np.float, "lat", fill_value=False)
-    time = out.createVariable("time", np.float, "time", fill_value=False)
+    longitudes = out.createVariable("lon", 'd', "lon", fill_value=False)
+    latitudes = out.createVariable("lat", 'd', "lat", fill_value=False)
+    time = out.createVariable("time", 'd', "time", fill_value=False)
 
-    SE = out.createVariable("SE", np.float, ("lat", "lon"), fill_value=np.nan)
+    SE = out.createVariable("SE", 'f', ("lat", "lon"))
 
     PSG = out.createVariable(
-        "PSG", np.float, ("time", "lat", "lon"), fill_value=np.nan
+        "PSG", 'f', ("time", "lat", "lon")
     )  # NetCDF has (level, time, lat, lon) as standard
 
     T = out.createVariable(
-        "T", np.float, ("time", "level", "lat", "lon"), fill_value=np.nan
+        "T", 'f', ("time", "level", "lat", "lon")
     )
 
     U = out.createVariable(
-        "U", np.float, ("time", "level", "lat", "lon"), fill_value=np.nan
+        "U", 'f', ("time", "level", "lat", "lon")
     )
 
     V = out.createVariable(
-        "V", np.float, ("time", "level", "lat", "lon"), fill_value=np.nan
+        "V", 'f', ("time", "level", "lat", "lon")
     )
 
     #    W = out.createVariable(
-    #        "W", np.float, ("time", "level", "lat", "lon"), fill_value=np.nan
+    #        "W", 'f', ("time", "level", "lat", "lon")
     #    )
 
     #    GP = out.createVariable(
-    #        "GP", np.float, ("time", "level", "lat", "lon"), fill_value=np.nan
+    #        "GP", 'f', ("time", "level", "lat", "lon")
     #    )
 
     # set axis attriute
