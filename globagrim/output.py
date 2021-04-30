@@ -53,6 +53,7 @@ def init_output():
     longitudes.axis = "X"
     latitudes.axis = "Y"
     time.axis = "T"  # Coordinated Universal Time
+    time.calendar = "gregorian"
 
     # assign units
     longitudes.units = "degrees_east"
@@ -85,7 +86,7 @@ def init_output():
     latitudes.standard_name = 'latitude'
     time.standard_name = 'time'
 
-    SE.standard_name = None
+    # SE.standard_name = None
     PSG.standard_name = "air_pressure_at_mean_sea_level"
     T.standard_name = "air_temperature"
     U.standard_name = "eastward_wind"
@@ -104,14 +105,14 @@ def init_output():
 
     new_glob_attrs = {
         'title': "GLOBAGRIM simulation",
-        'experiment': None,
+        # 'experiment': None,
         'Conventions': "CF-1.7",
-        'project': None,
+        # 'project': None,
         'source': "globagrim v0.1",
-        'license': None,
+        # 'license': None,
         'institution': "DKRZ, Germany",
         'contact': "Marco Kulueke, kulueke@dkrz.de",
-        'frequency': None,
+        # 'frequency': None,
         # 'proj_string': "+proj: lcc +lat_1: 53.0 +lat_2: 54.0 +lat_0: 53.55 +lon_0: 10.0 +ellps: WGS84 +datum: WGS84",
         'history': "created by globagrim v0.1",
     }
