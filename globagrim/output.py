@@ -19,9 +19,9 @@ def init_output():
     lat = out.createDimension("lat", global_const.NK)
 
     # create variables
-    longitudes = out.createVariable("lon", np.float, "lon", fill_value=np.nan)
-    latitudes = out.createVariable("lat", np.float, "lat", fill_value=np.nan)
-    time = out.createVariable("time", np.float, "time", fill_value=np.nan)
+    longitudes = out.createVariable("lon", np.float, "lon", fill_value=False)
+    latitudes = out.createVariable("lat", np.float, "lat", fill_value=False)
+    time = out.createVariable("time", np.float, "time", fill_value=False)
 
     SE = out.createVariable("SE", np.float, ("lat", "lon"), fill_value=np.nan)
 
@@ -49,6 +49,11 @@ def init_output():
     #        "GP", np.float, ("time", "level", "lat", "lon"), fill_value=np.nan
     #    )
 
+    # set axis attriute
+    longitudes.axis = "X"
+    latitudes.axis = "Y"
+    time.axis = "T"  # Coordinated Universal Time
+
     # assign units
     longitudes.units = "degrees_east"
     latitudes.units = "degrees_north"
@@ -62,7 +67,11 @@ def init_output():
     #    W.units = "1/s"
     #    GP.units = "J/kg"
 
-    # assign names
+    # assign long names
+    longitudes.long_name = 'longitude'
+    latitudes.long_name = 'latitude'
+    time.long_name = 'time'
+
     SE.long_name = "Surface Elevation"
     PSG.long_name = "Sea Level Pressure"
     T.long_name = "Temperature"
@@ -70,6 +79,19 @@ def init_output():
     V.long_name = "Meridional Wind"
     #    W.long_name = "Vertical Speed"
     #    GP.long_name = "Geopotential"
+
+    # assign standard names
+    longitudes.standard_name = 'longitude'
+    latitudes.standard_name = 'latitude'
+    time.standard_name = 'time'
+
+    SE.standard_name = None
+    PSG.standard_name = "air_pressure_at_mean_sea_level"
+    T.standard_name = "air_temperature"
+    U.standard_name = "eastward_wind"
+    V.standard_name = "northward_wind"
+    #    W.standard_name = None
+    #    GP.standard_name = "geopotential"
 
     # fill lon/lat
     longitudes[:] = global_array.flam_deg[1 : global_const.NJ + 1]
@@ -79,6 +101,30 @@ def init_output():
         datetime.strptime(global_str.start_time, "%d.%m.%Y %H:%M:%S")
         - datetime.strptime("08.10.1992 15:15:42.5", "%d.%m.%Y %H:%M:%S.%f")
     ).total_seconds()
+
+    new_glob_attrs = {
+        'title': "GLOBAGRIM simulation",
+        'experiment': None,
+        'Conventions': "CF-1.7",
+        'project': None,
+        'source': "globagrim v0.1",
+        'license': None,
+        'institution': "DKRZ, Germany",
+        'contact': "Marco Kulueke, kulueke@dkrz.de",
+        'frequency': None,
+        # 'proj_string': "+proj: lcc +lat_1: 53.0 +lat_2: 54.0 +lat_0: 53.55 +lon_0: 10.0 +ellps: WGS84 +datum: WGS84",
+        'history': "created by globagrim v0.1",
+    }
+    # `history` could contain a set of parameters provided to the `model()` call?
+    # 
+    # `source`: maybe use information from the `setup.py` for this purpose
+    # 
+    # These are more attributes than the CF Conventions suggest. Some are
+    # taken from the ACDD conventions (https://wiki.esipfed.org/Attribute_Convention_for_Data_Discovery_1-3).
+    # One could consider adding `geospatial_lat_resolution` and
+    # `geospatial_lon_resolution` if the lat and lon steps are fixed in space.
+
+    out.setncatts(new_glob_attrs)
 
 
 def fill_output():
