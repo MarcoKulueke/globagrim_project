@@ -9,7 +9,7 @@ dependencies:
   - netcdf4
   - matplotlib
   - shapely
-  - cartopy
+  - cartopy=0.18.0
   - jupyter
   - pip
   - pip:
