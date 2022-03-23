@@ -55,6 +55,6 @@ model.plot()
 Again, all parameters are optional. You can specify the visualization with the following parameters:
 - `var_name` String variable name (`SE`, `PSG`, `T`, `U`, `V`)
 - `out_step` Integer output time step
-- `center` Touple `(<lon>,<lat>)` for center of visualization
-- `min_max` Touple `(<min>,<max>)` for a fixed colorbar
+- `center` Tuple `(<lon>,<lat>)` for center of visualization
+- `min_max` Tuple `(<min>,<max>)` for a fixed colorbar
 - `save` String (e.g. `test.png`)
