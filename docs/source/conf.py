@@ -17,9 +17,9 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'mypackage'
-copyright = '2022, mypackage developers'
-author = 'mypackage developers'
+project = 'globagrim_env'
+copyright = '2022, Marco Kulüke'
+author = 'Marco Kulüke'
 
 
 # -- General configuration ---------------------------------------------------
