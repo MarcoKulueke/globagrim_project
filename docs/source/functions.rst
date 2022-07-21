@@ -1,7 +1,7 @@
 Functions
 =========
 
-.. automodule:: mypackage
+.. automodule:: globagrim_env
 
 .. autosummary::
    :toctree: _autosummary
