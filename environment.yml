@@ -11,6 +11,7 @@ dependencies:
   - shapely=1.7.1
   - cartopy=0.18.0
   - jupyter
+  - pytest
   - pip
   - pip:
     - "git+https://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim"
