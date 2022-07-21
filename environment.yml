@@ -12,6 +12,7 @@ dependencies:
   - cartopy=0.18.0
   - jupyter
   - pytest
+  - sphinx
   - pip
   - pip:
     - "git+https://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim"
