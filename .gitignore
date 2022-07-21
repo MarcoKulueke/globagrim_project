@@ -1,7 +1,0 @@
-*.nc
-__pycache__
-.ipynb_checkpoints 
-gif/*
-*pptx
-*html
-png/grid.png
