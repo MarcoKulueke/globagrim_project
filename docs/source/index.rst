@@ -9,7 +9,7 @@ Welcome to mypackage's documentation!
 .. toctree::
    :maxdepth: 2
 
-   trend
+   model
 
 
 Indices and tables

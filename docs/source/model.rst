@@ -6,4 +6,4 @@ Functions
 .. autosummary::
    :toctree: _autosummary
 
-   geopotential
+   plot
