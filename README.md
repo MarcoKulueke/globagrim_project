@@ -1,8 +1,9 @@
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/MarcoKulueke/globagrim_project/HEAD)
+
 # Global Atmospheric Grid Point Model
 
 ![logo](https://github.com/MarcoKulueke/globagrim_project/blob/main/png/logo.png?raw=true)
-
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/MarcoKulueke/globagrim_project/HEAD)
 
 This model is inspired by GLOBAGIM of CLISAP (more information can be found via: https://www.clisap.de/research/b:-climate-manifestations-and-impacts/crg-dynamical-systems/models/globagim/)
 
