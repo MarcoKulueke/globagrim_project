@@ -4,9 +4,9 @@ channels:
   - defaults
 dependencies:
   - python=3.9
-  - numpy
-  - xarray
-  - netcdf4
+  - numpy=1.22.3
+  - xarray=2022.3.0
+  - netcdf4=1.5.8
   - matplotlib=3.5.1
   - shapely=1.7.1
   - cartopy=0.18.0
