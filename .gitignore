@@ -4,4 +4,4 @@ __pycache__
 gif/*png
 *pptx
 *html
-DS_Store
+.DS_Store
