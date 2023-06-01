@@ -1,7 +1,7 @@
 *.nc
 __pycache__
 .ipynb_checkpoints 
-gif/*
+gif/*png
 *pptx
 *html
-png/grid.png
+DS_Store
