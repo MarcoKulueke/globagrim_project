@@ -1,3 +1,4 @@
+LICENSE.md
 README.md
 setup.py
 globagrim/__init__.py
