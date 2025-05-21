@@ -18,194 +18,194 @@ def true_wind_and_abs_ps(NK, NJ, psg, ps, PS0, uw, u, vw, v, tw, t):
             tw[j, k, :] = t[j, k, :] / psg[j, k]
 
 @njit(parallel=True, fastmath=True)
-def geopential():
+def geopential(gp, NL, phis, RD, tw, alp):
     #
     # calculation of geopotential with hydrostatic equation
     #
-    global_array.gp[:, :, global_const.NL - 1] = (
-        global_array.phis[:, :]
-        + global_const.RD
-        * global_array.tw[:, :, global_const.NL - 1]
-        * global_array.alp[global_const.NL - 1]
+    gp[:, :, NL - 1] = (
+        phis[:, :]
+        + RD
+        * tw[:, :, NL - 1]
+        * alp[NL - 1]
     )
-    for l in range(global_const.NL - 2, -1, -1):
-        global_array.gp[:, :, l] = (
-            global_array.gp[:, :, l + 1]
-            + global_const.RD
-            * (global_array.tw[:, :, l] + global_array.tw[:, :, l + 1])
-            * global_array.alp[l]
+    for l in range(NL - 2, -1, -1):
+        gp[:, :, l] = (
+            gp[:, :, l + 1]
+            + RD
+            * (tw[:, :, l] + tw[:, :, l + 1])
+            * alp[l]
         )
 
 @njit(parallel=True, fastmath=True)
-def zonal_pressure_gradient_force():
+def zonal_pressure_gradient_force(NK, NJ, apx, RD, tw, T0, ps, dx, psg, gp):
     #
     # zonal pressure gradient force
     #
-    for k in range(1, global_const.NK + 1):
-        for j in range(1, global_const.NJ + 1):
-            global_array.apx[j, k, :] = (
-                -global_const.RD
-                * (global_array.tw[j, k, :] + global_const.T0)
-                * (global_array.ps[j + 1, k] - global_array.ps[j - 1, k])
-                / global_array.dx[k]
+    for k in range(1, NK + 1):
+        for j in range(1, NJ + 1):
+            apx[j, k, :] = (
+                -RD
+                * (tw[j, k, :] + T0)
+                * (ps[j + 1, k] - ps[j - 1, k])
+                / dx[k]
                 / 2.0
-                - global_array.psg[j, k]
-                * (global_array.gp[j + 1, k, :] - global_array.gp[j - 1, k, :])
-                / global_array.dx[k]
+                - psg[j, k]
+                * (gp[j + 1, k, :] - gp[j - 1, k, :])
+                / dx[k]
                 / 2.0
             )
 
 @njit(parallel=True, fastmath=True)
-def meridional_pressure_gradient_force():
+def meridional_pressure_gradient_force(NK, NJ, apy, RD, tw, T0, ps, dy, psg, gp):
     #
     # meridional pressure gradient force
     #
-    for k in range(1, global_const.NK + 1):
-        for j in range(1, global_const.NJ + 1):
-            global_array.apy[j, k, :] = (
-                -global_const.RD
-                * (global_array.tw[j, k, :] + global_const.T0)
-                * (global_array.ps[j, k + 1] - global_array.ps[j, k - 1])
-                / global_array.dy
+    for k in range(1, NK + 1):
+        for j in range(1, NJ + 1):
+            apy[j, k, :] = (
+                -RD
+                * (tw[j, k, :] + T0)
+                * (ps[j, k + 1] - ps[j, k - 1])
+                / dy
                 / 2.0
-                - global_array.psg[j, k]
-                * (global_array.gp[j, k + 1, :] - global_array.gp[j, k - 1, :])
-                / global_array.dy
+                - psg[j, k]
+                * (gp[j, k + 1, :] - gp[j, k - 1, :])
+                / dy
                 / 2.0
             )
 
 @njit(parallel=True, fastmath=True)
-def corioles_and_centrifugal_force():
+def corioles_and_centrifugal_force(NK, NJ, acx, f, uw, sn, cs, RE, v, acy, u):
     #
     # coriolis and centrifugal force
     #
-    for k in range(1, global_const.NK + 1):
-        for j in range(1, global_const.NJ + 1):
-            global_array.acx[j, k, :] = (
-                global_array.f[k]
-                + global_array.uw[j, k, :]
-                * global_array.sn[k]
-                / global_array.cs[k]
-                / global_const.RE
-            ) * global_array.v[j, k, :]
-            global_array.acy[j, k, :] = (
+    for k in range(1, NK + 1):
+        for j in range(1, NJ + 1):
+            acx[j, k, :] = (
+                f[k]
+                + uw[j, k, :]
+                * sn[k]
+                / cs[k]
+                / RE
+            ) * v[j, k, :]
+            acy[j, k, :] = (
                 -(
-                    global_array.f[k]
-                    + global_array.uw[j, k, :]
-                    * global_array.sn[k]
-                    / global_array.cs[k]
-                    / global_const.RE
+                    f[k]
+                    + uw[j, k, :]
+                    * sn[k]
+                    / cs[k]
+                    / RE
                 )
-                * global_array.u[j, k, :]
+                * u[j, k, :]
             )
 
 @njit(parallel=True, fastmath=True)
-def div_zonal_impulse():
+def div_zonal_impulse(NK, NJ, du, u, uw, dx, v, cs, dy):
     #
     # zonal divergence of momentum
     #
-    for k in range(1, global_const.NK + 1):
-        for j in range(1, global_const.NJ + 1):
-            global_array.du[j, k, :] = (
+    for k in range(1, NK + 1):
+        for j in range(1, NJ + 1):
+            du[j, k, :] = (
                 (
-                    (global_array.u[j + 1, k, :] + global_array.u[j, k, :])
-                    * (global_array.uw[j + 1, k, :] + global_array.uw[j, k, :])
-                    - (global_array.u[j, k, :] + global_array.u[j - 1, k, :])
-                    * (global_array.uw[j, k, :] + global_array.uw[j - 1, k, :])
+                    (u[j + 1, k, :] + u[j, k, :])
+                    * (uw[j + 1, k, :] + uw[j, k, :])
+                    - (u[j, k, :] + u[j - 1, k, :])
+                    * (uw[j, k, :] + uw[j - 1, k, :])
                 )
                 / 4.0
-                / global_array.dx[k]
+                / dx[k]
             )
             +(
                 (
-                    global_array.v[j, k + 1, :] * global_array.cs[k + 1]
-                    + global_array.v[j, k, :] * global_array.cs[k]
+                    v[j, k + 1, :] * cs[k + 1]
+                    + v[j, k, :] * cs[k]
                 )
-                * (global_array.uw[j, k + 1, :] + global_array.uw[j, k, :])
+                * (uw[j, k + 1, :] + uw[j, k, :])
                 - (
-                    global_array.v[j, k, :] * global_array.cs[k]
-                    + global_array.v[j, k - 1, :] * global_array.cs[k - 1]
+                    v[j, k, :] * cs[k]
+                    + v[j, k - 1, :] * cs[k - 1]
                 )
-                * (global_array.uw[j, k, :] + global_array.uw[j, k - 1, :])
-            ) / 4.0 / global_array.dy / global_array.cs[k]
+                * (uw[j, k, :] + uw[j, k - 1, :])
+            ) / 4.0 / dy / cs[k]
 
 @njit(parallel=True, fastmath=True)
-def div_meridional_impulse():
+def div_meridional_impulse(NK, NJ, dv, u, vw, dx, v, cs, dy):
     #
     # meridional divergence of momentum
     #
-    for k in range(1, global_const.NK + 1):
-        for j in range(1, global_const.NJ + 1):
-            global_array.dv[j, k, :] = (
+    for k in range(1, NK + 1):
+        for j in range(1, NJ + 1):
+            dv[j, k, :] = (
                 (
-                    (global_array.u[j + 1, k, :] + global_array.u[j, k, :])
-                    * (global_array.vw[j + 1, k, :] + global_array.vw[j, k, :])
-                    - (global_array.u[j, k, :] + global_array.u[j - 1, k, :])
-                    * (global_array.vw[j, k, :] + global_array.vw[j - 1, k, :])
+                    (u[j + 1, k, :] + u[j, k, :])
+                    * (vw[j + 1, k, :] + vw[j, k, :])
+                    - (u[j, k, :] + u[j - 1, k, :])
+                    * (vw[j, k, :] + vw[j - 1, k, :])
                 )
                 / 4.0
-                / global_array.dx[k]
+                / dx[k]
             )
             +(
                 (
-                    global_array.v[j, k + 1, :] * global_array.cs[k + 1]
-                    + global_array.v[j, k, :] * global_array.cs[k]
+                    v[j, k + 1, :] * cs[k + 1]
+                    + v[j, k, :] * cs[k]
                 )
-                * (global_array.vw[j, k + 1, :] + global_array.vw[j, k, :])
+                * (vw[j, k + 1, :] + vw[j, k, :])
                 - (
-                    global_array.v[j, k, :] * global_array.cs[k]
-                    + global_array.v[j, k - 1, :] * global_array.cs[k - 1]
+                    v[j, k, :] * cs[k]
+                    + v[j, k - 1, :] * cs[k - 1]
                 )
-                * (global_array.vw[j, k, :] + global_array.vw[j, k - 1, :])
-            ) / 4.0 / global_array.dy / global_array.cs[k]
+                * (vw[j, k, :] + vw[j, k - 1, :])
+            ) / 4.0 / dy / cs[k]
 
 @njit(parallel=True, fastmath=True)
-def div_temperature_flow():
+def div_temperature_flow(NK, NJ, dvt, u, tw, dx, v, cs, dy):
     #
     # divergence of temperature flow
     #
-    for k in range(1, global_const.NK + 1):
-        for j in range(1, global_const.NJ + 1):
-            global_array.dvt[j, k, :] = (
+    for k in range(1, NK + 1):
+        for j in range(1, NJ + 1):
+            dvt[j, k, :] = (
                 (
-                    (global_array.u[j + 1, k, :] + global_array.u[j, k, :])
-                    * (global_array.tw[j + 1, k, :] + global_array.tw[j, k, :])
-                    - (global_array.u[j, k, :] + global_array.u[j - 1, k, :])
-                    * (global_array.tw[j, k, :] + global_array.tw[j - 1, k, :])
+                    (u[j + 1, k, :] + u[j, k, :])
+                    * (tw[j + 1, k, :] + tw[j, k, :])
+                    - (u[j, k, :] + u[j - 1, k, :])
+                    * (tw[j, k, :] + tw[j - 1, k, :])
                 )
                 / 4.0
-                / global_array.dx[k]
+                / dx[k]
             )
             +(
                 (
-                    global_array.v[j, k + 1, :] * global_array.cs[k + 1]
-                    + global_array.v[j, k, :] * global_array.cs[k]
+                    v[j, k + 1, :] * cs[k + 1]
+                    + v[j, k, :] * cs[k]
                 )
-                * (global_array.tw[j, k + 1, :] + global_array.tw[j, k, :])
+                * (tw[j, k + 1, :] + tw[j, k, :])
                 - (
-                    global_array.v[j, k, :] * global_array.cs[k]
-                    + global_array.v[j, k - 1, :] * global_array.cs[k - 1]
+                    v[j, k, :] * cs[k]
+                    + v[j, k - 1, :] * cs[k - 1]
                 )
-                * (global_array.tw[j, k, :] + global_array.tw[j, k - 1, :])
-            ) / 4.0 / global_array.dy / global_array.cs[k]
+                * (tw[j, k, :] + tw[j, k - 1, :])
+            ) / 4.0 / dy / cs[k]
 
 @njit(parallel=True, fastmath=True)
 def div_weighted_wind():
     #
     # divergence of mass-wighted wind
     #
-    for k in range(1, global_const.NK + 1):
-        for j in range(1, global_const.NJ + 1):
-            global_array.d[j, k, :] = (
-                (global_array.u[j + 1, k, :] - global_array.u[j - 1, k, :])
+    for k in range(1, NK + 1):
+        for j in range(1, NJ + 1):
+            d[j, k, :] = (
+                (u[j + 1, k, :] - u[j - 1, k, :])
                 / 2.0
-                / global_array.dx[k]
+                / dx[k]
                 + (
-                    global_array.v[j, k + 1, :] * global_array.cs[k + 1]
-                    - global_array.v[j, k - 1, :] * global_array.cs[k - 1]
+                    v[j, k + 1, :] * cs[k + 1]
+                    - v[j, k - 1, :] * cs[k - 1]
                 )
-                / global_array.cs[k]
-                / global_array.dy
+                / cs[k]
+                / dy
                 / 2.0
             )
 
@@ -214,10 +214,10 @@ def sigma_flow():
     #
     # divergence of mass flow between SIGMA=0 and SIGMA=SIGMA[l]
     #
-    global_array.dm[:, :, 1] = global_array.d[:, :, 1] * global_int.dsig
-    for l in range(2, global_const.NL):
-        global_array.dm[:, :, l] = (
-            global_array.dm[:, :, l - 1] + global_array.d[:, :, l] * global_int.dsig
+    dm[:, :, 1] = d[:, :, 1] * global_int.dsig
+    for l in range(2, NL):
+        dm[:, :, l] = (
+            dm[:, :, l - 1] + d[:, :, l] * global_int.dsig
         )
 
 # maybe index error
@@ -226,15 +226,15 @@ def vert_speed_sigma():
     #
     # calculation of vertial velocity in SIGMA system
     #
-    for l in range(0, global_const.NL - 2):
-        global_array.dsdt[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l] = (
-            global_array.sigma[l]
-            / global_array.psg[1 : global_const.NJ + 1, 1 : global_const.NK + 1]
-            * global_array.dm[
-                1 : global_const.NJ + 1, 1 : global_const.NK + 1, global_const.NL - 1
+    for l in range(0, NL - 2):
+        dsdt[1 : NJ + 1, 1 : NK + 1, l] = (
+            sigma[l]
+            / psg[1 : NJ + 1, 1 : NK + 1]
+            * dm[
+                1 : NJ + 1, 1 : NK + 1, NL - 1
             ]
-            - global_array.dm[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l]
-            / global_array.psg[1 : global_const.NJ + 1, 1 : global_const.NK + 1]
+            - dm[1 : NJ + 1, 1 : NK + 1, l]
+            / psg[1 : NJ + 1, 1 : NK + 1]
         )
 
 @njit(parallel=True, fastmath=True)
@@ -242,46 +242,46 @@ def adiabatic_heating():
     #
     # calculation of adiabatic compression heat
     #
-    for k in range(1, global_const.NK + 1):
-        for j in range(1, global_const.NJ + 1):
-            global_array.comp[j, k, :] = (
-                global_const.FKAP
-                * (global_array.tw[j, k, :] + global_const.T0)
+    for k in range(1, NK + 1):
+        for j in range(1, NJ + 1):
+            comp[j, k, :] = (
+                FKAP
+                * (tw[j, k, :] + T0)
                 * (
-                    global_array.uw[j, k, :]
-                    * (global_array.ps[j + 1, k] - global_array.ps[j - 1, k])
-                    / global_array.dx[k]
+                    uw[j, k, :]
+                    * (ps[j + 1, k] - ps[j - 1, k])
+                    / dx[k]
                     / 2.0
-                    + global_array.vw[j, k, :]
-                    * (global_array.ps[j, k + 1] - global_array.ps[j, k - 1])
-                    / global_array.dy
+                    + vw[j, k, :]
+                    * (ps[j, k + 1] - ps[j, k - 1])
+                    / dy
                     / 2.0
                 )
             )
 
-    global_array.comp[1 : global_const.NJ + 1, 1 : global_const.NK + 1, 0] = (
-        global_array.comp[1 : global_const.NJ + 1, 1 : global_const.NK + 1, 0]
-        - global_const.FKAP
+    comp[1 : NJ + 1, 1 : NK + 1, 0] = (
+        comp[1 : NJ + 1, 1 : NK + 1, 0]
+        - FKAP
         * (
-            global_array.tw[1 : global_const.NJ + 1, 1 : global_const.NK + 1, 1]
-            + global_const.T0
+            tw[1 : NJ + 1, 1 : NK + 1, 1]
+            + T0
         )
-        * global_array.alp[1]
-        * global_array.d[1 : global_const.NJ + 1, 1 : global_const.NK + 1, 1]
+        * alp[1]
+        * d[1 : NJ + 1, 1 : NK + 1, 1]
     )
-    for l in range(1, global_const.NL):
-        global_array.comp[
-            1 : global_const.NJ + 1, 1 : global_const.NK + 1, l
-        ] = global_array.comp[
-            1 : global_const.NJ + 1, 1 : global_const.NK + 1, l
-        ] - global_const.FKAP * (
-            global_array.tw[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l]
-            + global_const.T0
+    for l in range(1, NL):
+        comp[
+            1 : NJ + 1, 1 : NK + 1, l
+        ] = comp[
+            1 : NJ + 1, 1 : NK + 1, l
+        ] - FKAP * (
+            tw[1 : NJ + 1, 1 : NK + 1, l]
+            + T0
         ) * (
-            global_array.alp[l]
-            * global_array.d[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l]
-            + (global_array.alp[l] + global_array.alp[l - 1])
-            * global_array.dm[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l - 1]
+            alp[l]
+            * d[1 : NJ + 1, 1 : NK + 1, l]
+            + (alp[l] + alp[l - 1])
+            * dm[1 : NJ + 1, 1 : NK + 1, l - 1]
             / global_int.dsig
         )
 
@@ -290,52 +290,52 @@ def div_vert_advection():
     #
     # calculation of divergence of vertical advective flow
     #
-    for l in range(0, global_const.NL - 1):
+    for l in range(0, NL - 1):
         lp = l + 1
         lm = l - 1
-        if lp > global_const.NL:
-            lp = global_const.NL
+        if lp > NL:
+            lp = NL
         if lm < 1:
             lm = 1
-        global_array.vdivu[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l] = (
-            global_array.dsdt[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l]
+        vdivu[1 : NJ + 1, 1 : NK + 1, l] = (
+            dsdt[1 : NJ + 1, 1 : NK + 1, l]
             * (
-                global_array.u[1 : global_const.NJ + 1, 1 : global_const.NK + 1, lp]
-                + global_array.u[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l]
+                u[1 : NJ + 1, 1 : NK + 1, lp]
+                + u[1 : NJ + 1, 1 : NK + 1, l]
             )
             / 2.0
-            - global_array.dsdt[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l - 1]
+            - dsdt[1 : NJ + 1, 1 : NK + 1, l - 1]
             * (
-                global_array.u[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l]
-                + global_array.u[1 : global_const.NJ + 1, 1 : global_const.NK + 1, lm]
-            )
-            / 2.0
-        ) / global_int.dsig
-        global_array.vdivv[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l] = (
-            global_array.dsdt[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l]
-            * (
-                global_array.v[1 : global_const.NJ + 1, 1 : global_const.NK + 1, lp]
-                + global_array.v[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l]
-            )
-            / 2.0
-            - global_array.dsdt[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l - 1]
-            * (
-                global_array.v[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l]
-                + global_array.v[1 : global_const.NJ + 1, 1 : global_const.NK + 1, lm]
+                u[1 : NJ + 1, 1 : NK + 1, l]
+                + u[1 : NJ + 1, 1 : NK + 1, lm]
             )
             / 2.0
         ) / global_int.dsig
-        global_array.vdivt[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l] = (
-            global_array.dsdt[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l]
+        vdivv[1 : NJ + 1, 1 : NK + 1, l] = (
+            dsdt[1 : NJ + 1, 1 : NK + 1, l]
             * (
-                global_array.t[1 : global_const.NJ + 1, 1 : global_const.NK + 1, lp]
-                + global_array.t[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l]
+                v[1 : NJ + 1, 1 : NK + 1, lp]
+                + v[1 : NJ + 1, 1 : NK + 1, l]
             )
             / 2.0
-            - global_array.dsdt[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l - 1]
+            - dsdt[1 : NJ + 1, 1 : NK + 1, l - 1]
             * (
-                global_array.t[1 : global_const.NJ + 1, 1 : global_const.NK + 1, l]
-                + global_array.t[1 : global_const.NJ + 1, 1 : global_const.NK + 1, lm]
+                v[1 : NJ + 1, 1 : NK + 1, l]
+                + v[1 : NJ + 1, 1 : NK + 1, lm]
+            )
+            / 2.0
+        ) / global_int.dsig
+        vdivt[1 : NJ + 1, 1 : NK + 1, l] = (
+            dsdt[1 : NJ + 1, 1 : NK + 1, l]
+            * (
+                t[1 : NJ + 1, 1 : NK + 1, lp]
+                + t[1 : NJ + 1, 1 : NK + 1, l]
+            )
+            / 2.0
+            - dsdt[1 : NJ + 1, 1 : NK + 1, l - 1]
+            * (
+                t[1 : NJ + 1, 1 : NK + 1, l]
+                + t[1 : NJ + 1, 1 : NK + 1, lm]
             )
             / 2.0
         ) / global_int.dsig
@@ -345,42 +345,42 @@ def summarize_trends():
     #
     # summarize trends
     #
-    for k in range(1, global_const.NK + 1):
-        for j in range(1, global_const.NJ + 1):
-            global_array.ut[j, k, :] = (
-                global_array.acx[j, k, :]
-                + global_array.apx[j, k, :]
-                - global_array.du[j, k, :]
-                - global_array.vdivu[j, k, :]
-                + global_array.diffu[j, k, :]
+    for k in range(1, NK + 1):
+        for j in range(1, NJ + 1):
+            ut[j, k, :] = (
+                acx[j, k, :]
+                + apx[j, k, :]
+                - du[j, k, :]
+                - vdivu[j, k, :]
+                + diffu[j, k, :]
             )
-            global_array.vt[j, k, :] = (
-                global_array.acy[j, k, :]
-                + global_array.apy[j, k, :]
-                - global_array.dv[j, k, :]
-                - global_array.vdivv[j, k, :]
-                + global_array.diffv[j, k, :]
+            vt[j, k, :] = (
+                acy[j, k, :]
+                + apy[j, k, :]
+                - dv[j, k, :]
+                - vdivv[j, k, :]
+                + diffv[j, k, :]
             )
-            global_array.tt[j, k, :] = (
-                -global_array.dvt[j, k, :]
-                + global_array.comp[j, k, :]
-                - global_array.vdivt[j, k, :]
-                + global_array.difft[j, k, :]
+            tt[j, k, :] = (
+                -dvt[j, k, :]
+                + comp[j, k, :]
+                - vdivt[j, k, :]
+                + difft[j, k, :]
             )
-            global_array.pst[j, k] = -global_array.dm[j, k, global_const.NL - 1]
+            pst[j, k] = -dm[j, k, NL - 1]
 
 
 #############################################################
 
 def trend():
     true_wind_and_abs_ps(global_const.NK, global_const.NJ, global_array.psg, global_array.ps, global_const.PS0, global_array.uw, global_array.u, global_array.vw, global_array.v, global_array.tw, global_array.t)
-    geopential()
-    zonal_pressure_gradient_force()
-    meridional_pressure_gradient_force()
-    corioles_and_centrifugal_force()
-    div_zonal_impulse()
-    div_meridional_impulse()
-    div_temperature_flow()
+    geopential(global_array.gp, global_const.NL, global_array.phis, global_const.RD, global_array.tw, global_array.alp)
+    zonal_pressure_gradient_force(global_const.NK, global_const.NJ, global_array.apx, global_const.RD, global_array.tw, global_const.T0, global_array.ps, global_array.dx, global_array.psg, global_array.gp)
+    meridional_pressure_gradient_force(global_const.NK, global_const.NJ, global_array.apy, global_const.RD, global_array.tw, global_const.T0, global_array.ps, global_int.dy, global_array.psg, global_array.gp)
+    corioles_and_centrifugal_force(global_const.NK, global_const.NJ, global_array.acx, global_array.f, global_array.uw, global_array.sn, global_array.cs, global_const.RE, global_array.v, global_array.acy, global_array.u)
+    div_zonal_impulse(global_const.NK, global_const.NJ, global_array.du, global_array.u, global_array.uw, global_array.dx, global_array.v, global_array.cs, global_int.dy)
+    div_meridional_impulse(global_const.NK, global_const.NJ, global_array.dv, global_array.u, global_array.vw, global_array.dx, global_array.v, global_array.cs, global_int.dy)
+    div_temperature_flow(global_const.NK, global_const.NJ, global_array.dvt, global_array.u, global_array.tw, global_array.dx, global_array.v, global_array.cs, global_int.dy)
     div_weighted_wind()
     sigma_flow()
     vert_speed_sigma()

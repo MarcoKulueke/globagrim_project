@@ -1,5 +1,5 @@
 from .variables import global_array, global_const, global_int
-import numpy as np
+import numpy as np # type: ignore
 
 
 def grid():
@@ -32,7 +32,7 @@ def grid():
     global_array.dx[:] = (
         global_const.RE * np.cos(global_array.phi) * global_array.dlam
     )  # dependent on latitude
-    global_array.dy = global_const.RE * dphi
+    global_int.dy = global_const.RE * dphi
     #
     # calculation latitide cosine and sine
     #
