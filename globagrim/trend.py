@@ -1,22 +1,23 @@
 from .variables import global_const, global_int, global_array
+from numba import njit
 
 #                             #
 # Berechnen der Zeittendenzen #
 #                             #
 
-
-def true_wind_and_abs_ps():
+@njit(parallel=True, fastmath=True)
+def true_wind_and_abs_ps(NK, NJ, psg, ps, PS0, uw, u, vw, v, tw, t):
     #
     # calculation of true wind component and absolute surface pressure
     #
-    for k in range(0, global_const.NK + 2):
-        for j in range(0, global_const.NJ + 2):
-            global_array.psg[j, k] = global_array.ps[j, k] + global_const.PS0
-            global_array.uw[j, k, :] = global_array.u[j, k, :] / global_array.psg[j, k]
-            global_array.vw[j, k, :] = global_array.v[j, k, :] / global_array.psg[j, k]
-            global_array.tw[j, k, :] = global_array.t[j, k, :] / global_array.psg[j, k]
+    for k in range(0, NK + 2):
+        for j in range(0, NJ + 2):
+            psg[j, k] = ps[j, k] + PS0
+            uw[j, k, :] = u[j, k, :] / psg[j, k]
+            vw[j, k, :] = v[j, k, :] / psg[j, k]
+            tw[j, k, :] = t[j, k, :] / psg[j, k]
 
-
+@njit(parallel=True, fastmath=True)
 def geopential():
     #
     # calculation of geopotential with hydrostatic equation
@@ -35,7 +36,7 @@ def geopential():
             * global_array.alp[l]
         )
 
-
+@njit(parallel=True, fastmath=True)
 def zonal_pressure_gradient_force():
     #
     # zonal pressure gradient force
@@ -54,7 +55,7 @@ def zonal_pressure_gradient_force():
                 / 2.0
             )
 
-
+@njit(parallel=True, fastmath=True)
 def meridional_pressure_gradient_force():
     #
     # meridional pressure gradient force
@@ -73,7 +74,7 @@ def meridional_pressure_gradient_force():
                 / 2.0
             )
 
-
+@njit(parallel=True, fastmath=True)
 def corioles_and_centrifugal_force():
     #
     # coriolis and centrifugal force
@@ -98,7 +99,7 @@ def corioles_and_centrifugal_force():
                 * global_array.u[j, k, :]
             )
 
-
+@njit(parallel=True, fastmath=True)
 def div_zonal_impulse():
     #
     # zonal divergence of momentum
@@ -128,7 +129,7 @@ def div_zonal_impulse():
                 * (global_array.uw[j, k, :] + global_array.uw[j, k - 1, :])
             ) / 4.0 / global_array.dy / global_array.cs[k]
 
-
+@njit(parallel=True, fastmath=True)
 def div_meridional_impulse():
     #
     # meridional divergence of momentum
@@ -158,7 +159,7 @@ def div_meridional_impulse():
                 * (global_array.vw[j, k, :] + global_array.vw[j, k - 1, :])
             ) / 4.0 / global_array.dy / global_array.cs[k]
 
-
+@njit(parallel=True, fastmath=True)
 def div_temperature_flow():
     #
     # divergence of temperature flow
@@ -188,7 +189,7 @@ def div_temperature_flow():
                 * (global_array.tw[j, k, :] + global_array.tw[j, k - 1, :])
             ) / 4.0 / global_array.dy / global_array.cs[k]
 
-
+@njit(parallel=True, fastmath=True)
 def div_weighted_wind():
     #
     # divergence of mass-wighted wind
@@ -208,7 +209,7 @@ def div_weighted_wind():
                 / 2.0
             )
 
-
+@njit(parallel=True, fastmath=True)
 def sigma_flow():
     #
     # divergence of mass flow between SIGMA=0 and SIGMA=SIGMA[l]
@@ -219,8 +220,8 @@ def sigma_flow():
             global_array.dm[:, :, l - 1] + global_array.d[:, :, l] * global_int.dsig
         )
 
-
 # maybe index error
+@njit(parallel=True, fastmath=True)
 def vert_speed_sigma():
     #
     # calculation of vertial velocity in SIGMA system
@@ -236,7 +237,7 @@ def vert_speed_sigma():
             / global_array.psg[1 : global_const.NJ + 1, 1 : global_const.NK + 1]
         )
 
-
+@njit(parallel=True, fastmath=True)
 def adiabatic_heating():
     #
     # calculation of adiabatic compression heat
@@ -284,7 +285,7 @@ def adiabatic_heating():
             / global_int.dsig
         )
 
-
+@njit(parallel=True, fastmath=True)
 def div_vert_advection():
     #
     # calculation of divergence of vertical advective flow
@@ -339,7 +340,7 @@ def div_vert_advection():
             / 2.0
         ) / global_int.dsig
 
-
+@njit(parallel=True, fastmath=True)
 def summarize_trends():
     #
     # summarize trends
@@ -371,9 +372,8 @@ def summarize_trends():
 
 #############################################################
 
-
 def trend():
-    true_wind_and_abs_ps()
+    true_wind_and_abs_ps(global_const.NK, global_const.NJ, global_array.psg, global_array.ps, global_const.PS0, global_array.uw, global_array.u, global_array.vw, global_array.v, global_array.tw, global_array.t)
     geopential()
     zonal_pressure_gradient_force()
     meridional_pressure_gradient_force()
