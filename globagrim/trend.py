@@ -1,5 +1,5 @@
 from .variables import global_const, global_int, global_array
-from numba import njit
+from numba import njit # type: ignore
 
 #                             #
 # Berechnen der Zeittendenzen #
@@ -190,7 +190,7 @@ def div_temperature_flow(NK, NJ, dvt, u, tw, dx, v, cs, dy):
             ) / 4.0 / dy / cs[k]
 
 @njit(parallel=True, fastmath=True)
-def div_weighted_wind():
+def div_weighted_wind(NK, NJ, d, u, dx, v, cs, dy):
     #
     # divergence of mass-wighted wind
     #
@@ -210,19 +210,19 @@ def div_weighted_wind():
             )
 
 @njit(parallel=True, fastmath=True)
-def sigma_flow():
+def sigma_flow(dm, d, dsig, NL):
     #
     # divergence of mass flow between SIGMA=0 and SIGMA=SIGMA[l]
     #
-    dm[:, :, 1] = d[:, :, 1] * global_int.dsig
+    dm[:, :, 1] = d[:, :, 1] * dsig
     for l in range(2, NL):
         dm[:, :, l] = (
-            dm[:, :, l - 1] + d[:, :, l] * global_int.dsig
+            dm[:, :, l - 1] + d[:, :, l] * dsig
         )
 
 # maybe index error
 @njit(parallel=True, fastmath=True)
-def vert_speed_sigma():
+def vert_speed_sigma(NL, dsdt, NJ, NK, sigma, psg, dm):
     #
     # calculation of vertial velocity in SIGMA system
     #
@@ -238,7 +238,7 @@ def vert_speed_sigma():
         )
 
 @njit(parallel=True, fastmath=True)
-def adiabatic_heating():
+def adiabatic_heating(NK, NJ, comp, FKAP, tw, T0, uw, ps, dx, vw, dy, alp, d, NL, dm, dsig):
     #
     # calculation of adiabatic compression heat
     #
@@ -282,11 +282,11 @@ def adiabatic_heating():
             * d[1 : NJ + 1, 1 : NK + 1, l]
             + (alp[l] + alp[l - 1])
             * dm[1 : NJ + 1, 1 : NK + 1, l - 1]
-            / global_int.dsig
+            / dsig
         )
 
 @njit(parallel=True, fastmath=True)
-def div_vert_advection():
+def div_vert_advection(NL, vdivu, NJ, NK, dsdt, u, vdivv, v, vdivt, t, dsig):
     #
     # calculation of divergence of vertical advective flow
     #
@@ -310,7 +310,7 @@ def div_vert_advection():
                 + u[1 : NJ + 1, 1 : NK + 1, lm]
             )
             / 2.0
-        ) / global_int.dsig
+        ) / dsig
         vdivv[1 : NJ + 1, 1 : NK + 1, l] = (
             dsdt[1 : NJ + 1, 1 : NK + 1, l]
             * (
@@ -324,7 +324,7 @@ def div_vert_advection():
                 + v[1 : NJ + 1, 1 : NK + 1, lm]
             )
             / 2.0
-        ) / global_int.dsig
+        ) / dsig
         vdivt[1 : NJ + 1, 1 : NK + 1, l] = (
             dsdt[1 : NJ + 1, 1 : NK + 1, l]
             * (
@@ -338,10 +338,10 @@ def div_vert_advection():
                 + t[1 : NJ + 1, 1 : NK + 1, lm]
             )
             / 2.0
-        ) / global_int.dsig
+        ) / dsig
 
 @njit(parallel=True, fastmath=True)
-def summarize_trends():
+def summarize_trends(NK, NJ, ut, acx, apx, du, vdivu, diffu, vt, acy, apy, dv, vdivv, diffv, tt, dvt, comp, vdivt, difft, pst, dm, NL):
     #
     # summarize trends
     #
@@ -381,12 +381,12 @@ def trend():
     div_zonal_impulse(global_const.NK, global_const.NJ, global_array.du, global_array.u, global_array.uw, global_array.dx, global_array.v, global_array.cs, global_int.dy)
     div_meridional_impulse(global_const.NK, global_const.NJ, global_array.dv, global_array.u, global_array.vw, global_array.dx, global_array.v, global_array.cs, global_int.dy)
     div_temperature_flow(global_const.NK, global_const.NJ, global_array.dvt, global_array.u, global_array.tw, global_array.dx, global_array.v, global_array.cs, global_int.dy)
-    div_weighted_wind()
-    sigma_flow()
-    vert_speed_sigma()
-    adiabatic_heating()
-    div_vert_advection()
-    summarize_trends()
+    div_weighted_wind(global_const.NK, global_const.NJ, global_array.d, global_array.u, global_array.dx, global_array.v, global_array.cs, global_int.dy)
+    sigma_flow(global_array.dm, global_array.d, global_int.dsig, global_const.NL)
+    vert_speed_sigma(global_const.NL, global_array.dsdt, global_const.NJ, global_const.NK, global_array.sigma, global_array.psg, global_array.dm)
+    adiabatic_heating(global_const.NK, global_const.NJ, global_array.comp, global_const.FKAP, global_array.tw, global_const.T0, global_array.uw, global_array.ps, global_array.dx, global_array.vw, global_int.dy, global_array.alp, global_array.d, global_const.NL, global_array.dm, global_int.dsig)
+    div_vert_advection(global_const.NL, global_array.vdivu, global_const.NJ, global_const.NK, global_array.dsdt, global_array.u, global_array.vdivv, global_array.v, global_array.vdivt, global_array.t, global_int.dsig)
+    summarize_trends(global_const.NK, global_const.NJ, global_array.ut, global_array.acx, global_array.apx, global_array.du, global_array.vdivu, global_array.diffu, global_array.vt, global_array.acy, global_array.apy, global_array.dv, global_array.vdivv, global_array.diffv, global_array.tt, global_array.dvt, global_array.comp, global_array.vdivt, global_array.difft, global_array.pst, global_array.dm, global_const.NL)
 
 
 if __name__ == "__main__":
