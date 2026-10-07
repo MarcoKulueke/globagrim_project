@@ -10,6 +10,7 @@ dependencies:
   - matplotlib=3.5.1
   - shapely=1.7.1
   - cartopy=0.18.0
+  - libtiff<4.5
   - jupyter
   - pytest
   - sphinx
